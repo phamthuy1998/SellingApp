@@ -46,4 +46,7 @@ interface ApiManager {
 
     @GET("")
     fun getListSlider() : Call<ArrayList<Product>>
+
+    @GET("")
+    fun addOrder() : Call<ArrayList<Product>>
 }
