@@ -57,19 +57,7 @@ class MainActivity : AppCompatActivity() , ViewPager.OnPageChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        val viewPagerAdapter = MyFragmentPagerAdapter(supportFragmentManager)
-
-        viewPagerAdapter.addFragment(homeFragment, "Home fragment")
-        viewPagerAdapter.addFragment(categoryFragment, "Category fragment")
-        viewPagerAdapter.addFragment(searchFragment, "Search fragment")
-        viewPagerAdapter.addFragment(userFragment, "User fragment")
-
-        viewPagerMain.adapter = viewPagerAdapter
-
-        //viewPagerMain.setOffscreenPageLimit(1)
-
-        viewPagerMain.addOnPageChangeListener(this)
+        addViewPager()
 
         val checkShowSearch = intent.getBooleanExtra("search", false)
         if(checkShowSearch){
@@ -79,6 +67,7 @@ class MainActivity : AppCompatActivity() , ViewPager.OnPageChangeListener {
         botNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.bot_nav_home -> {
+                    edtSearchMain.requestFocus()
                     viewPagerMain.currentItem = 0
                     true
                 }
@@ -97,6 +86,16 @@ class MainActivity : AppCompatActivity() , ViewPager.OnPageChangeListener {
                 else -> false
             }
         }
+    }
+
+    private fun addViewPager() {
+        val viewPagerAdapter = MyFragmentPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.addFragment(homeFragment, "Home fragment")
+        viewPagerAdapter.addFragment(categoryFragment, "Category fragment")
+        viewPagerAdapter.addFragment(searchFragment, "Search fragment")
+        viewPagerAdapter.addFragment(userFragment, "User fragment")
+        viewPagerMain.adapter = viewPagerAdapter
+        viewPagerMain.addOnPageChangeListener(this)
     }
 
     fun showCategoryFragment(view: View) {

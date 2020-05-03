@@ -20,7 +20,9 @@ data class Product(
     @SerializedName("")
     val image: String? = null,
     @SerializedName("")
-    val display: String? = null
+    val display: String? = null ,
+    @SerializedName("")
+    val stock: Int?= null
 ) {
     override fun toString() = name ?: ""
 }

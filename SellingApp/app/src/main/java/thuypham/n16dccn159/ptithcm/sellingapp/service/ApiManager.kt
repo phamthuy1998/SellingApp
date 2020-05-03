@@ -6,7 +6,10 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
+import thuypham.n16dccn159.ptithcm.sellingapp.data.Category
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Product
+import thuypham.n16dccn159.ptithcm.sellingapp.data.Slide
 import thuypham.n16dccn159.ptithcm.sellingapp.data.User
 
 interface ApiManager {
@@ -29,24 +32,39 @@ interface ApiManager {
         }
     }
 
-    @GET("")
-    fun login(email: String, password: String) : Call<Boolean>
+    @POST("")
+    fun login(email: String, password: String): Call<Int>
+
+    @POST("")
+    fun signUp(user: User): Call<Int>
+
+    @POST("")
+    fun forgotPassword(email: String): Call<Int>
 
     @GET("")
-    fun signUp(user: User) : Call<Boolean>
+    fun getListProductSale(): Call<ArrayList<Product>>
 
     @GET("")
-    fun getListProductSale() : Call<ArrayList<Product>>
+    fun getAllProductSale(): Call<ArrayList<Product>>
 
     @GET("")
-    fun getListProductOfCategory(cateId: Int) : Call<ArrayList<Product>>
+    fun getListProductOfCategory(cateId: Int): Call<ArrayList<Product>>
 
     @GET("")
-    fun getListOrder(userId: Int) : Call<ArrayList<Product>>
+    fun getProductDetailByID(productID: Int): Call<Product>
+
+    @POST("")
+    fun addCart(productID: Int): Call<Boolean>
 
     @GET("")
-    fun getListSlider() : Call<ArrayList<Product>>
+    fun getListOrder(userId: Int): Call<ArrayList<Product>>
 
     @GET("")
-    fun addOrder() : Call<ArrayList<Product>>
+    fun getListSlider(): Call<ArrayList<Slide>>
+
+    @POST("")
+    fun addOrder(): Call<ArrayList<Product>>
+
+    @GET("")
+    fun getListCategory(): Call<ArrayList<Category>>
 }

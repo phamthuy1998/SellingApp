@@ -3,7 +3,15 @@
 
     <data>
 
+        <variable
+            name="product"
+            type="thuypham.n16dccn159.ptithcm.sellingapp.data.Product" />
+
+        <variable
+            name="cartCount"
+            type="Integer" />
     </data>
+
     <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -25,12 +33,13 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/btn_cancel_product_detail"
+                        android:id="@+id/btnBackProductDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
@@ -40,21 +49,49 @@
                         app:srcCompat="@drawable/ic_left_arrow" />
 
                     <TextView
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        tools:text="@string/name_sign_up"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{product.name}"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold" />
 
-                    <include layout="@layout/ll_cart" />
+                    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/cartProductDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="5dp"
+                            android:padding="10dp"
+                            android:tint="@color/colorWhiteBG"
+                            app:srcCompat="@drawable/ic_shopping_cart" />
+
+                        <TextView
+                            android:id="@+id/tv_number_cart"
+                            txtCartCount="@{cartCount}"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center|top|end"
+                            android:background="@drawable/edt_number_cart"
+                            android:gravity="center"
+                            android:textColor="@color/colorWhiteBG"
+                            android:textSize="12sp"
+                            android:visibility="visible" />
+                    </FrameLayout>
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_product_detail"
+                imageFromUrl="@{product.image}"
                 android:layout_width="0dp"
                 android:layout_height="400dp"
                 android:layout_marginStart="16dp"
@@ -69,15 +106,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:text="@{product.name}"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_product_detail"
-                tools:text="@string/name_sign_up" />
+                app:layout_constraintTop_toBottomOf="@id/iv_product_detail" />
 
             <TextView
                 android:id="@+id/tv_price_discount_product_detail"
+                discount="@{product.discount}"
+                price="@{product.price}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
@@ -90,6 +129,7 @@
 
             <TextView
                 android:id="@+id/tv_price_product_detail"
+                txtPrice="@{product.price}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
@@ -103,6 +143,7 @@
 
             <TextView
                 android:id="@+id/tv_discount_percent"
+                textDiscount="@{product.discount}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
@@ -115,22 +156,24 @@
 
             <TextView
                 android:id="@+id/tv_out_of_product"
+                productStock="@{product.stock}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16sp"
                 android:layout_marginStart="16dp"
-                android:text="@string/out_of_product"
                 android:textColor="@color/colorRedError"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_price_discount_product_detail" />
+                app:layout_constraintTop_toBottomOf="@id/tv_price_discount_product_detail"
+                tools:text="@string/out_of_product" />
 
             <TextView
-                android:id="@+id/btn_buy_product_detail"
+                android:id="@+id/btnBuy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:background="@drawable/edit_btn_sign_in"
+                style="@style/Button"
+                enableBtnAddCart="@{product.stock}"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/choose_to_buy"
@@ -152,7 +195,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_buy_product_detail" />
+                app:layout_constraintTop_toBottomOf="@id/btnBuy" />
 
             <TextView
                 android:id="@+id/tv_content_product_detail"
@@ -162,12 +205,13 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/content_of_product_detail"
+                android:text="@{product.information}"
                 android:textColor="@color/colorTextHint"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_title"
+                tools:text="@string/content_of_product_detail" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

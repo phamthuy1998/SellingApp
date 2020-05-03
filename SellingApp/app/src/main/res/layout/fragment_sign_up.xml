@@ -23,6 +23,29 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ll_username"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel">
+
+                    <thuypham.n16dccn159.ptithcm.sellingapp.widget.EditTextField
+                        android:id="@+id/edtUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/user_name"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:text="@{userViewModel.userName}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ll_text_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -83,6 +106,25 @@
                         android:theme="@style/EditTextTheme"
                         app:clearButtonMode="whileEditing" />
                 </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:theme="@style/TextLabel">
+
+                    <thuypham.n16dccn159.ptithcm.sellingapp.widget.EditTextField
+                        android:id="@+id/edtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/address"
+                        android:inputType="textPostalAddress"
+                        android:singleLine="true"
+                        android:text="@={userViewModel.address}"
+                        android:theme="@style/EditTextTheme"
+                        app:clearButtonMode="whileEditing" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="fill_parent"
@@ -105,40 +147,6 @@
                         android:theme="@style/EditTextTheme" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <include
-                    layout="@layout/layout_input_birthday"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp" />
-
-                <RadioGroup
-                    android:id="@+id/rad_btn_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="horizontal"
-                    android:theme="@style/MyRadioButtonStyle">
-
-                    <RadioButton
-                        android:id="@+id/rad_male"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="@string/rab_male" />
-
-                    <RadioButton
-                        android:id="@+id/rad_female"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/female" />
-                </RadioGroup>
-
                 <Button
                     android:id="@+id/btn_sign_up"
                     android:layout_width="match_parent"
@@ -146,7 +154,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/edit_btn_sign_in"
+                    style="@style/Button"
+                    android:enabled="@{userViewModel.isValidateSignUp()}"
                     android:text="@string/btn_sign_up"
                     android:textColor="@android:color/white" />
             </LinearLayout>

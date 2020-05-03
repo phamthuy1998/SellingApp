@@ -3,10 +3,13 @@
 
     <data>
 
+        <variable
+            name="product"
+            type="thuypham.n16dccn159.ptithcm.sellingapp.data.Product" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ll_product_sale"
+        android:id="@+id/itemProductSale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -22,6 +25,7 @@
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:layout_gravity="center"
+                imageFromUrl="@{product.image}"
                 android:background="@color/colorWhiteBG"
                 android:scaleType="centerCrop" />
 
@@ -33,7 +37,7 @@
                 android:background="@drawable/edit_btn_sign_in"
                 android:gravity="center"
                 android:padding="1dp"
-                android:text="@string/sale_percent"
+                textDiscount="@{product.discount}"
                 android:textColor="@color/colorWhiteBG"
                 android:textSize="13sp" />
 
@@ -48,7 +52,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:maxLines="1"
-            android:text="@string/tv_name"
+            android:text="@{product.name}"
             android:textColor="@color/colorTextHint"
             android:textSize="14sp" />
 
@@ -57,9 +61,9 @@
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/_1_290_000"
+            price="@{product.price}"
+            discount="@{product.discount}"
             android:textColor="@color/colorTextHint"
             android:textStyle="bold" />
-
     </LinearLayout>
 </layout>

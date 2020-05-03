@@ -9,13 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.authentication.LoginActivity"></activity>
-        <activity android:name=".feature.product.ProductInCategoryActivity" />
-        <activity android:name=".feature.product.ProductDetailActivity" />
+        <activity android:name=".feature.cart.CartActivity"></activity>
+        <activity android:name=".feature.authentication.EditProfileActivity" />
+        <activity
+            android:name=".feature.authentication.LoginActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.product.ProductInCategoryActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.product.ProductDetailActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".feature.splash.SplashActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.SplashScreen">
+            android:theme="@style/AppTheme.SplashScreen"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

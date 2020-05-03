@@ -1,4 +1,4 @@
-package com.thuypham.ptithcm.mytiki.viewsHelp
+package thuypham.n16dccn159.ptithcm.sellingapp.widget
 
 import android.content.Context
 import android.os.Parcelable
@@ -8,20 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
-import com.thuypham.ptithcm.mytiki.R
-import com.thuypham.ptithcm.mytiki.main.fragment.category.model.Advertisement
-import java.util.ArrayList
-import androidx.databinding.adapters.ImageViewBindingAdapter.setImageDrawable
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import thuypham.n16dccn159.ptithcm.sellingapp.R
+import thuypham.n16dccn159.ptithcm.sellingapp.data.Slide
+import java.util.*
 
 
-class SlidingImage_Adapter(private val context: Context, private val arrAdv: ArrayList<Advertisement>) : PagerAdapter() {
-    private val inflater: LayoutInflater
+class SlidingImageAdapter(private val context: Context, private val arrAdv: ArrayList<Slide>) : PagerAdapter() {
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-
-    init {
-        inflater = LayoutInflater.from(context)
-    }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
@@ -32,11 +26,10 @@ class SlidingImage_Adapter(private val context: Context, private val arrAdv: Arr
     }
 
     override fun instantiateItem(view: ViewGroup, position: Int): Any {
-        val imageLayout = inflater.inflate(com.thuypham.ptithcm.mytiki.R.layout.slidingimages_layout_home, view, false)!!
+        val imageLayout = inflater.inflate(R.layout.slidingimages_layout_home, view, false)!!
 
         val imageView = imageLayout
-                .findViewById(com.thuypham.ptithcm.mytiki.R.id.image) as ImageView
-
+                .findViewById(R.id.image) as ImageView
 
         Glide.with(context)
             .load(arrAdv[position].image)
