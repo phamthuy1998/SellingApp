@@ -7,7 +7,7 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.Product
 import thuypham.n16dccn159.ptithcm.sellingapp.databinding.ItemProductSaleBinding
 
 class ProductSaleAdapter(
-    private var onProductClick: () -> Unit
+    private var onProductClick: (id:Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listProductSale: ArrayList<Product> = arrayListOf()
@@ -43,7 +43,7 @@ class ProductSaleAdapter(
             binding.apply {
                 product = item
                 executePendingBindings()
-//                ll_product_sale
+                itemProductSale.setOnClickListener { item.id?.let { it1 -> onProductClick(it1) } }
             }
         }
     }

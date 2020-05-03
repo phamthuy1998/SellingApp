@@ -15,7 +15,11 @@ import thuypham.n16dccn159.ptithcm.sellingapp.databinding.ActivityProductDetailB
 import thuypham.n16dccn159.ptithcm.sellingapp.databinding.BottomSheetAddCartBinding
 import thuypham.n16dccn159.ptithcm.sellingapp.di.Injection
 import thuypham.n16dccn159.ptithcm.sellingapp.ext.PRODUCT_ID
+import thuypham.n16dccn159.ptithcm.sellingapp.ext.USER_ID
+import thuypham.n16dccn159.ptithcm.sellingapp.ext.getIntPref
+import thuypham.n16dccn159.ptithcm.sellingapp.feature.authentication.LoginActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.cart.CartActivity
+import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.CartViewModel
 import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.ProductsViewModel
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -28,6 +32,13 @@ class ProductDetailActivity : AppCompatActivity() {
         )[ProductsViewModel::class.java]
     }
 
+    private val cartViewModel: CartViewModel by lazy {
+        ViewModelProvider(
+            this,
+            Injection.provideCartViewModelFactory()
+        )[CartViewModel::class.java]
+    }
+
     private var productId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,29 +46,43 @@ class ProductDetailActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_detail)
         productId = intent.getIntExtra(PRODUCT_ID, -1)
         if (productId != -1 && productId != null) {
+            // Set cart count, check user is login yet? check by get userID from Shared pref
+            val userId = getIntPref(USER_ID)
+            binding.cartCount = 0
+            if (userId != -1)
+                cartViewModel.getCartCount(userId)
+
             productViewModel.getProductById(productId!!)
             bindViewModel()
             addEvents()
         } else {
-            Toast.makeText(
-                applicationContext,
-                "Can't load info of this product!",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast
+                .makeText(applicationContext, "Can't load info of this product!", Toast.LENGTH_LONG)
+                .show()
+            finish()
         }
     }
 
     private fun addEvents() {
-        binding.cartProductDetail.setOnClickListener { startActivity<CartActivity>() }
+        binding.cartProductDetail.setOnClickListener {
+            // Check user login
+            if (getIntPref(USER_ID) != -1) startActivity<CartActivity>()
+            else startActivity<LoginActivity>()
+        }
         binding.btnBackProductDetail.setOnClickListener { finish() }
         binding.btnBuy.setOnClickListener {
             addCart()
-            showBottomDialogAddCart()
         }
     }
 
     private fun addCart() {
-        productId?.let { productViewModel.addCart(it) }
+        val userId = getIntPref(USER_ID)
+        if (userId != -1) {
+            productId?.let { productViewModel.addCart(it) }
+            showBottomDialogAddCart()
+        }
+        // If haven't login , intent to login activity
+        else startActivity<LoginActivity>()
     }
 
     private fun showBottomDialogAddCart() {
@@ -89,6 +114,10 @@ class ProductDetailActivity : AppCompatActivity() {
                     Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
                 }
             }
+        })
+
+        cartViewModel.cartCount.observe(this, Observer {
+            binding.cartCount = it ?: 0
         })
     }
 }

@@ -17,6 +17,7 @@ fun Activity.hideSoftKeyboard() {
     )
 }
 
+
 fun Activity?.replaceFragment(
     @IdRes id: Int = R.id.frmLogin,
     fragment: Fragment,

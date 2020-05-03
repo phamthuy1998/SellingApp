@@ -31,7 +31,7 @@ class HomeFragment : Fragment() {
     }
 
     private val productSalAdt: ProductSaleAdapter by lazy {
-        ProductSaleAdapter()
+        ProductSaleAdapter { id -> showProductDetail(id) }
     }
 
     private val slideAdapter: SlidingImageAdapter by lazy {
@@ -110,10 +110,12 @@ class HomeFragment : Fragment() {
 
     private fun addEvents() {
         swRefreshHome.setOnRefreshListener { homeViewModel.refresh() }
-        pagerHome.setOnClickListener{
-            val intent = Intent(context, ProductDetailActivity::class.java)
-            intent.putExtra(PRODUCT_ID, arrSlide[currentPage].productID)
-            requireActivity().startActivity(intent)
-        }
+        pagerHome.setOnClickListener { showProductDetail(arrSlide[currentPage].productID) }
+    }
+
+    private fun showProductDetail(id: Int?) {
+        val intent = Intent(context, ProductDetailActivity::class.java)
+        intent.putExtra(PRODUCT_ID, id)
+        requireActivity().startActivity(intent)
     }
 }

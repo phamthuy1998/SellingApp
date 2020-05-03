@@ -67,4 +67,10 @@ interface ApiManager {
 
     @GET("")
     fun getListCategory(): Call<ArrayList<Category>>
+
+    @GET("")
+    fun getCartCount(userID:Int): Call<Int>
+
+    @GET("")
+    fun getProductsCart(userID:Int):  Call<ArrayList<Product>>
 }

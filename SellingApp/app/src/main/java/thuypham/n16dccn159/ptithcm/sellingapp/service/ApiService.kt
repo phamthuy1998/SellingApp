@@ -58,6 +58,7 @@ class ApiService(private val apiApi: ApiManager) {
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
+
     fun addCart(
         productID: Int,
         onPrepared: () -> Unit,
@@ -75,6 +76,28 @@ class ApiService(private val apiApi: ApiManager) {
         onError: (String) -> Unit
     ) {
         val request = apiApi.getListCategory()
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun getCartCount(
+        userID: Int,
+        onPrepared: () -> Unit,
+        onSuccess: (Int?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.getCartCount(userID)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun getProductCart(
+        userID: Int,
+        onPrepared: () -> Unit,
+        onSuccess: (ArrayList<Product>?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.getProductsCart(userID)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }

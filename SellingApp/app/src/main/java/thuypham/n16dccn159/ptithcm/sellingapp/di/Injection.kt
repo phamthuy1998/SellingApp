@@ -1,14 +1,8 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.di
 
 import androidx.lifecycle.ViewModelProvider
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.AuthRepository
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.CategoryRepository
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.OrderRepository
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.ProductRepository
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.impl.AuthRepositoryImpl
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.impl.CategoryRepositoryImpl
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.impl.OrderRepositoryImpl
-import thuypham.n16dccn159.ptithcm.sellingapp.repository.impl.ProductRepositoryImpl
+import thuypham.n16dccn159.ptithcm.sellingapp.repository.*
+import thuypham.n16dccn159.ptithcm.sellingapp.repository.impl.*
 import thuypham.n16dccn159.ptithcm.sellingapp.service.ApiManager
 import thuypham.n16dccn159.ptithcm.sellingapp.service.ApiService
 import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.*
@@ -40,6 +34,10 @@ object Injection {
         return CategoryRepositoryImpl(provideApiService())
     }
 
+    private fun provideCartRepository(): CartRepository {
+        return CartRepositoryImpl(provideApiService())
+    }
+
     /*----------------- View model factory -----------------*/
 
     fun provideHomeViewModelFactory(): ViewModelProvider.Factory {
@@ -60,5 +58,9 @@ object Injection {
 
     fun provideProductsViewModelFactory(): ViewModelProvider.Factory {
         return ProductsViewModelFactory(provideProductRepository())
+    }
+
+    fun provideCartViewModelFactory(): ViewModelProvider.Factory {
+        return CartViewModelFactory(provideCartRepository())
     }
 }

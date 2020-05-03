@@ -1,7 +1,6 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.feature.main
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,13 +12,9 @@ import thuypham.n16dccn159.ptithcm.sellingapp.feature.main.adapter.MyFragmentPag
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.user.UserFragment
 
 class MainActivity : AppCompatActivity() , ViewPager.OnPageChangeListener {
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
-
-    }
+    override fun onPageScrollStateChanged(state: Int) {}
 
     override fun onPageSelected(position: Int) {
         when (position) {
@@ -38,32 +33,36 @@ class MainActivity : AppCompatActivity() , ViewPager.OnPageChangeListener {
         }
     }
 
-    // set icon selected: home
-    var idMenuSelected: Int = R.id.bot_nav_home
-    val homeFragment by lazy {
+    private val homeFragment by lazy {
         HomeFragment()
     }
-    val searchFragment by lazy {
+    private val searchFragment by lazy {
         SearchFragment()
     }
-    val categoryFragment by lazy {
+    private val categoryFragment by lazy {
         CategoryFragment()
     }
-    val userFragment by lazy {
+    private val userFragment by lazy {
         UserFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         addViewPager()
+        addBotNavEvents()
+        addEvents()
+    }
 
-        val checkShowSearch = intent.getBooleanExtra("search", false)
-        if(checkShowSearch){
+    private fun addEvents() {
+        viewPagerMain.addOnPageChangeListener(this)
+        edtSearchMain.setOnClickListener {
             viewPagerMain.currentItem = 2
+            edtSearchMain.requestFocus()
         }
+    }
 
+    private fun addBotNavEvents() {
         botNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.bot_nav_home -> {
@@ -95,14 +94,5 @@ class MainActivity : AppCompatActivity() , ViewPager.OnPageChangeListener {
         viewPagerAdapter.addFragment(searchFragment, "Search fragment")
         viewPagerAdapter.addFragment(userFragment, "User fragment")
         viewPagerMain.adapter = viewPagerAdapter
-        viewPagerMain.addOnPageChangeListener(this)
-    }
-
-    fun showCategoryFragment(view: View) {
-        viewPagerMain.currentItem = 1
-    }
-
-    fun showSearchFragment(view: View) {
-        viewPagerMain.currentItem = 2
     }
 }

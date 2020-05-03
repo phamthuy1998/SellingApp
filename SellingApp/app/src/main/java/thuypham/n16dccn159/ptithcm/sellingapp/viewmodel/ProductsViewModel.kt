@@ -58,6 +58,8 @@ class ProductsViewModel(private val repository: ProductRepository) : ViewModel()
     fun addCart(productId: Int) {
         requestAddCart.value = repository.addCart(productId)
     }
+
+
 }
 
 

@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="thuypham.n16dccn159.ptithcm.sellingapp.feature.authentication.signin.LoginFragment" />
+            type="thuypham.n16dccn159.ptithcm.sellingapp.feature.authentication.LoginFragment" />
 
         <variable
             name="userViewModel"
