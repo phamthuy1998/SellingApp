@@ -94,7 +94,7 @@ class ProductsOfCategoryActivity : AppCompatActivity() {
         }
         btnContinueShopping.setOnClickListener { startActivity<MainActivity>(); finish() }
         edtSearchProducts.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
+              override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -110,7 +110,10 @@ class ProductsOfCategoryActivity : AppCompatActivity() {
 
     private fun bindViewModel() {
         productViewModel.listProductCategory.observe(this, Observer {
-            productAdapter.setProductList(it)
+            if (it != null) {
+                productsEmpty.gone()
+                productAdapter.setProductList(it)
+            } else productsEmpty.visible()
         })
 
         productViewModel.networkStateProCategory.observe(this, Observer {

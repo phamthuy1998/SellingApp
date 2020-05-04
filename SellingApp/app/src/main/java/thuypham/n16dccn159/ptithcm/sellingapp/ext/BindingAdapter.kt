@@ -24,7 +24,9 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
 @SuppressLint("SetTextI18n")
 @BindingAdapter("textDiscount")
 fun bindTextDiscount(view: TextView, discount: Float?) {
-    view.text = discount.toString() + "%"
+    if (discount != 0.toFloat()) {
+        view.text = " - " + discount.toString() + "%"
+    }
 }
 
 @BindingAdapter(value = ["price", "discount"], requireAll = false)
@@ -48,24 +50,24 @@ fun bindPrice(view: TextView, price: Float?) {
 fun bindProductCount(view: TextView, stock: Int) {
     val strStock: String
     if (stock > 0) {
-        strStock =  "$stock sản phẩm sẵn có"
+        strStock = "$stock sản phẩm sẵn có"
         view.setTextColor(Color.parseColor("#0C0C0C"))
-    }
-    else {
-        strStock= "Hết hàng"
+    } else {
+        strStock = "Hết hàng"
         view.setTextColor(Color.parseColor("#F44336"))
     }
     view.text = strStock
 }
+
 @BindingAdapter("enableBtnAddCart")
 fun bindBtnAddCart(view: TextView, stock: Int) {
-   view.isEnabled = stock>0
+    view.isEnabled = stock > 0
 }
+
 @BindingAdapter("txtCartCount")
 fun bindTextCartCount(view: TextView, counter: Int) {
     if (counter > 0) {
         view.visible()
         view.text = counter.toString()
-    }
-    else view.gone()
+    } else view.gone()
 }

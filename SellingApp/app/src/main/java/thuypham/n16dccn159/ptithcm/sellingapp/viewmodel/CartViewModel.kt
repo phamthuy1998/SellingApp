@@ -4,14 +4,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Product
+import thuypham.n16dccn159.ptithcm.sellingapp.data.ProductCart
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
 import thuypham.n16dccn159.ptithcm.sellingapp.repository.CartRepository
 
 class CartViewModel(private val repository: CartRepository) : ViewModel() {
 
     private val requestCartCount = MutableLiveData<Result<Int>>()
-    private val requestProductsCart = MutableLiveData<Result<ArrayList<Product>>>()
+    private val requestProductsCart = MutableLiveData<Result<ArrayList<ProductCart>>>()
+    private val requestPlusCart = MutableLiveData<Result<Boolean>>()
+    private val requestMinusCart = MutableLiveData<Result<Boolean>>()
+    private val requestDelCart = MutableLiveData<Result<Boolean>>()
+    private val listProductCartItem = MutableLiveData<Result<Boolean>>()
+
+    val name:  String = ""
+    val phone:  String = ""
+    val address:  String = ""
+    val email:  String = ""
+
+    fun isValidateTextInput(): Boolean =
+        name.isNotEmpty() && address.isNotEmpty() && phone.isNotEmpty() && email.isNotEmpty()
+
 
     val cartCount = Transformations.switchMap(requestCartCount) {
         it.data
@@ -31,6 +44,31 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     fun getProductsCart(userID: Int) {
         requestProductsCart.value = repository.getProductCart(userID)
     }
+
+    val networkPlusCart = Transformations.switchMap(requestPlusCart) {
+        it.networkState
+    }
+
+    fun plusCart(userID: Int, productId: Int) {
+        requestPlusCart.value = repository.plusCart(userID, productId)
+    }
+
+    val networkMinusCart = Transformations.switchMap(requestMinusCart) {
+        it.networkState
+    }
+
+    fun minusCart(userID: Int, productId: Int) {
+        requestMinusCart.value = repository.minusCart(userID, productId)
+    }
+
+    val networkDelCart = Transformations.switchMap(requestDelCart) {
+        it.networkState
+    }
+
+    fun delCartItem(userID: Int, productId: Int) {
+        requestDelCart.value = repository.delCart(userID, productId)
+    }
+
 }
 
 class CartViewModelFactory(

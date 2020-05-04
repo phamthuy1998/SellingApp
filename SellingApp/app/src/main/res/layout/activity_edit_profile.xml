@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.UserViewModel" />
         <variable
             name="user"
             type="thuypham.n16dccn159.ptithcm.sellingapp.data.User" />
@@ -274,8 +276,6 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
-
-
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

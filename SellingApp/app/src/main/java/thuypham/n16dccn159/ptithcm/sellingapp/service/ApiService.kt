@@ -1,9 +1,6 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.service
 
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Category
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Product
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Slide
-import thuypham.n16dccn159.ptithcm.sellingapp.data.User
+import thuypham.n16dccn159.ptithcm.sellingapp.data.*
 
 class ApiService(private val apiApi: ApiManager) {
 
@@ -91,10 +88,46 @@ class ApiService(private val apiApi: ApiManager) {
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
 
+    fun minusCart(
+        userID: Int,
+        productID: Int,
+        onPrepared: () -> Unit,
+        onSuccess: (Boolean?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.minusCart(userID, productID)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun plusCart(
+        userID: Int,
+        productID: Int,
+        onPrepared: () -> Unit,
+        onSuccess: (Boolean?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.plusCart(userID, productID)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun delCart(
+        userID: Int,
+        productID: Int,
+        onPrepared: () -> Unit,
+        onSuccess: (Boolean?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.delItemCart(userID, productID)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
     fun getProductCart(
         userID: Int,
         onPrepared: () -> Unit,
-        onSuccess: (ArrayList<Product>?) -> Unit,
+        onSuccess: (ArrayList<ProductCart>?) -> Unit,
         onError: (String) -> Unit
     ) {
         val request = apiApi.getProductsCart(userID)
@@ -110,6 +143,17 @@ class ApiService(private val apiApi: ApiManager) {
         onError: (String) -> Unit
     ) {
         val request = apiApi.login(email, password)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun addOrder(
+        order: Order, itemOrder: ArrayList<OrderItem>,
+        onPrepared: () -> Unit,
+        onSuccess: (Boolean?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.addOrder(order, itemOrder)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
