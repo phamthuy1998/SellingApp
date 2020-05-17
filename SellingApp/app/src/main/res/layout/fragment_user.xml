@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="user"
+            type="thuypham.n16dccn159.ptithcm.sellingapp.data.User" />
         <variable
             name="userViewModel"
             type="thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.UserViewModel" />
@@ -52,60 +56,28 @@
                         android:layout_weight="0.8"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <TextView
                             android:id="@+id/tv_user_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="true"
+                            android:text="@{user.username}"
+                            tools:text="User name"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/ts_name" />
 
                         <TextView
                             android:id="@+id/tv_email"
+                            tools:text="Email"
+                            android:text="@{user.email}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_blue_right_arrow"
                             android:singleLine="true"
                             android:textColor="@android:color/darker_gray"
                             android:textSize="@dimen/ts_name" />
-
-                        <TextView
-                            android:id="@+id/tv_time_member"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/ts_name" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_info_not_logged"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="0.8"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="visible">
-
-                        <TextView
-                            android:id="@+id/tv_welcome"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/welcome_to_tiki"
-                            android:textSize="@dimen/ts_name" />
-
-                        <TextView
-                            android:id="@+id/tv_sign_in_up"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawableEnd="@drawable/ic_blue_right_arrow"
-                            android:text="@string/sign_in_sign_up"
-                            android:textColor="@color/colorBlue"
-                            android:textSize="20sp" />
-
                     </LinearLayout>
 
                 </LinearLayout>

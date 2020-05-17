@@ -3,24 +3,25 @@ package thuypham.n16dccn159.ptithcm.sellingapp.repository.impl
 import androidx.lifecycle.MutableLiveData
 import thuypham.n16dccn159.ptithcm.sellingapp.data.NetworkState
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
+import thuypham.n16dccn159.ptithcm.sellingapp.data.ResultLogin
 import thuypham.n16dccn159.ptithcm.sellingapp.data.User
 import thuypham.n16dccn159.ptithcm.sellingapp.repository.AuthRepository
 import thuypham.n16dccn159.ptithcm.sellingapp.service.ApiService
 
 class AuthRepositoryImpl(private val apiService: ApiService) : AuthRepository {
-    override fun login(email: String, password: String): Result<Int> {
+    override fun login(email: String, password: String): Result<ResultLogin> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseLogin = MutableLiveData<Int>()
+        val responseLogin = MutableLiveData<ResultLogin>()
         apiService.login(
             email, password,
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
+            onSuccess = { response ->
                 responseLogin.value = response
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -31,19 +32,26 @@ class AuthRepositoryImpl(private val apiService: ApiService) : AuthRepository {
         )
     }
 
-    override fun signUp(user: User): Result<Int> {
+    override fun signUp(
+        username: String,
+        password: String,
+        name: String,
+        email: String,
+        phone: String,
+        address: String
+    ): Result<ResultLogin> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseSignUp = MutableLiveData<Int>()
+        val responseSignUp = MutableLiveData<ResultLogin>()
         apiService.signUp(
-            user,
+            username, password, name, email, phone, address,
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
+            onSuccess = { response ->
                 responseSignUp.value = response
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -62,17 +70,40 @@ class AuthRepositoryImpl(private val apiService: ApiService) : AuthRepository {
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
+            onSuccess = { response ->
                 responseForgotPassword.value = response
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
 
         return Result(
             data = responseForgotPassword,
+            networkState = networkState
+        )
+    }
+
+    override fun getUserInfoByUserID(userID: Int): Result<User> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseUser = MutableLiveData<User>()
+        apiService.getUserInfoByUserID(
+            userID,
+            onPrepared = {
+                networkState.postValue(NetworkState.LOADING)
+            },
+            onSuccess = { response ->
+                responseUser.value = response?.get(0)
+                networkState.postValue(NetworkState.LOADED)
+            },
+            onError = { errMessage ->
+                networkState.postValue(NetworkState.error(errMessage))
+            }
+        )
+
+        return Result(
+            data = responseUser,
             networkState = networkState
         )
     }

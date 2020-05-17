@@ -3,6 +3,7 @@
 
     <item android:state_enabled="false">
         <shape>
+            <corners android:radius="@dimen/corner_default_button"/>
             <solid android:color="@color/colorGrayBtn" />
         </shape>
     </item>

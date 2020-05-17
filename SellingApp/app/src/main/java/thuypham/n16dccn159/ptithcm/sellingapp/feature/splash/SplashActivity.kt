@@ -1,14 +1,14 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.feature.splash
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import org.jetbrains.anko.startActivity
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import kotlinx.android.synthetic.main.activity_splash.*
-import thuypham.n16dccn159.ptithcm.sellingapp.feature.main.MainActivity
+import org.jetbrains.anko.startActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.R
+import thuypham.n16dccn159.ptithcm.sellingapp.feature.authentication.LoginActivity
 
 class SplashActivity : AppCompatActivity() , Animation.AnimationListener{
 
@@ -30,7 +30,7 @@ class SplashActivity : AppCompatActivity() , Animation.AnimationListener{
     }
 
     private fun openNextScreen() {
-        startActivity<MainActivity>()
+        startActivity<LoginActivity>()
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }

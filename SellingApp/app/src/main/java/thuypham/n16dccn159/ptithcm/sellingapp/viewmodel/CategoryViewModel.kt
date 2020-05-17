@@ -23,7 +23,7 @@ class CategoryViewModel(private val repository: CategoryRepository) : ViewModel(
         it.networkState
     }
 
-    fun getListCategories() {
+    private fun getListCategories() {
         requestCategories.value = repository.getListCategory()
     }
 }

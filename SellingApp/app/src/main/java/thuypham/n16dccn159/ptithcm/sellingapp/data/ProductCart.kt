@@ -4,25 +4,25 @@ import com.google.gson.annotations.SerializedName
 import thuypham.n16dccn159.ptithcm.sellingapp.base.DynamicSearchAdapter
 
 data class ProductCart(
-    @SerializedName("")
+    @SerializedName("Id")
     val id: Int? = null,
-    @SerializedName("")
+    @SerializedName("Name")
     val name: String? = null,
-    @SerializedName("")
+    @SerializedName("Price")
     val price: Float? = null,
-    @SerializedName("")
+    @SerializedName("Discount")
     val discount: Float? = null,
-    @SerializedName("")
+    @SerializedName("CateId")
     val cateId: Int? = null,
-    @SerializedName("")
+    @SerializedName("Description")
     val description: String? = null,
-    @SerializedName("")
+    @SerializedName("Information")
     val information: String? = null,
-    @SerializedName("")
+    @SerializedName("Image")
     val image: String? = null,
-    @SerializedName("")
-    val display: String? = null,
-    @SerializedName("")
+    @SerializedName("Display")
+    val display: Boolean? = null,
+    @SerializedName("Stock")
     val stock: Int? = null,
     @SerializedName("")
     val quantity: Int? = null

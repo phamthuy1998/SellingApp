@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,8 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.Slide
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Status
 import thuypham.n16dccn159.ptithcm.sellingapp.di.Injection
 import thuypham.n16dccn159.ptithcm.sellingapp.ext.PRODUCT_ID
+import thuypham.n16dccn159.ptithcm.sellingapp.ext.gone
+import thuypham.n16dccn159.ptithcm.sellingapp.ext.visible
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.home.adapter.ProductSaleAdapter
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.product.ProductDetailActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.HomeViewModel
@@ -47,6 +50,8 @@ class HomeFragment : Fragment() {
             this,
             Injection.provideHomeViewModelFactory()
         )[HomeViewModel::class.java]
+        homeViewModel.getListSlide()
+        homeViewModel.getListProductSale()
     }
 
     override fun onCreateView(
@@ -60,13 +65,18 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         addEvents()
+//        initSlide()
         bindViewModel()
     }
 
-    private fun initSlide() {
-        val density = resources.displayMetrics.density
+    private fun playSlide() {
 
-        indicator.radius = 5 * density
+        pagerHome.adapter= SlidingImageAdapter(requireContext(), arrSlide)
+        indicator.setViewPager(pagerHome)
+
+        val density = resources.displayMetrics.density
+        indicator.radius = 3 * density
+
         NUM_PAGES = arrSlide.size
 
         // Auto start of viewpager
@@ -87,16 +97,28 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindViewModel() {
+
         homeViewModel.listProductSale.observe(viewLifecycleOwner, Observer {
             productSalAdt.setProductList(it)
         })
+
         homeViewModel.networkStateProSale.observe(viewLifecycleOwner, Observer {
+            when(it.status){
+                Status.RUNNING -> progressHome.visible()
+                Status.SUCCESS -> progressHome.gone()
+                Status.FAILED -> {
+                    progressHome.gone()
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+        homeViewModel.networkStateSlide.observe(viewLifecycleOwner, Observer {
             progressHome.visibility = if (it.status == Status.RUNNING) View.VISIBLE else View.GONE
         })
         homeViewModel.listSlides.observe(viewLifecycleOwner, Observer {
             arrSlide = it
             slideAdapter.notifyDataSetChanged()
-            initSlide()
+            playSlide()
         })
     }
 
@@ -106,6 +128,12 @@ class HomeFragment : Fragment() {
         rv_product_home.setItemViewCacheSize(20)
         rv_product_home.layoutManager = GridLayoutManager(requireContext(), 2)
         rv_product_home.addItemDecoration(GridItemDecoration(10, 2))
+
+//        pagerHome.adapter= slideAdapter
+//        indicator.setViewPager(pagerHome)
+//
+//        val density = resources.displayMetrics.density
+//        indicator.radius = 5 * density
     }
 
     private fun addEvents() {

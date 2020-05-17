@@ -13,12 +13,20 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.Slide
 import java.util.*
 
 
-class SlidingImageAdapter(private val context: Context, private val arrAdv: ArrayList<Slide>) : PagerAdapter() {
+class SlidingImageAdapter(private val context: Context, private var arrAdv: ArrayList<Slide>) : PagerAdapter() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
+    }
+
+    fun setData(listAdv: ArrayList<Slide>){
+        if(listAdv.isNotEmpty()){
+            arrAdv.clear()
+            arrAdv.addAll(listAdv)
+            notifyDataSetChanged()
+        }
     }
 
     override fun getCount(): Int {

@@ -8,8 +8,6 @@ import thuypham.n16dccn159.ptithcm.sellingapp.service.ApiService
 import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.*
 
 object Injection {
-
-
     /*----------------- api service -----------------*/
 
     private fun provideApiService(): ApiService {

@@ -5,16 +5,17 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
+import thuypham.n16dccn159.ptithcm.sellingapp.data.ResultLogin
 import thuypham.n16dccn159.ptithcm.sellingapp.data.User
 import thuypham.n16dccn159.ptithcm.sellingapp.repository.AuthRepository
 
 class UserViewModel(private val repository: AuthRepository) : ViewModel() {
-    var address: String = ""
-    var email: String = ""
-    var password: String = ""
-    var name: String = ""
-    var userName: String = ""
-    var phone: String = ""
+    var address = MutableLiveData<String>().apply { value = "" }
+    var email = MutableLiveData<String>().apply { value = "" }
+    var password = MutableLiveData<String>().apply { value = "" }
+    var name = MutableLiveData<String>().apply { value = "" }
+    var userName = MutableLiveData<String>().apply { value = "" }
+    var phone = MutableLiveData<String>().apply { value = "" }
 
     /*---------------- Check text empty set button enable ----------------*/
     fun isValidate(email: String): Boolean {
@@ -22,17 +23,22 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
     }
 
     fun isValidateLogin(): Boolean {
-        return email.isNotEmpty() && password.isNotEmpty()
+        return !email.value.equals("") && !password.value.equals("")
     }
 
     fun isValidateSignUp(): Boolean =
-        userName.isNotEmpty() && name.isNotEmpty() && address.isNotEmpty() && phone.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()
+        !userName.value.equals("") && !name.value.equals("") && !address.value.equals("")
+                && !phone.value.equals("") && !email.value.equals("") && !password.value.equals("")
 
     /*---------------Login---------------*/
-    private val requestLogin = MutableLiveData<Result<Int>>()
+    private val requestLogin = MutableLiveData<Result<ResultLogin>>()
 
     val networkStateLogin = Transformations.switchMap(requestLogin) {
         it.networkState
+    }
+
+    val resultLogin = Transformations.switchMap(requestLogin) {
+        it.data
     }
 
     fun login(email: String, password: String) {
@@ -40,14 +46,24 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
     }
 
     /*--------------- Sign Up ---------------*/
-    private val requestSignUp = MutableLiveData<Result<Int>>()
+    private val requestSignUp = MutableLiveData<Result<ResultLogin>>()
 
     val networkStateSignUp = Transformations.switchMap(requestSignUp) {
         it.networkState
     }
+    val dataRegister = Transformations.switchMap(requestSignUp) {
+        it.data
+    }
 
-    fun signUp(user: User) {
-        requestSignUp.value = repository.signUp(user)
+    fun signUp(
+        username: String,
+        password: String,
+        name: String,
+        email: String,
+        phone: String,
+        address: String
+    ) {
+        requestSignUp.value = repository.signUp(username, password, name, email, phone, address)
     }
 
     /*--------------- Forgot password---------------*/
@@ -59,6 +75,21 @@ class UserViewModel(private val repository: AuthRepository) : ViewModel() {
 
     fun forgotPassword(email: String) {
         requestForgotPassword.value = repository.forgotPassword(email)
+    }
+
+    /*--------------- get user info---------------*/
+    private val requestUserInfo = MutableLiveData<Result<User>>()
+
+    val networkUserInfo = Transformations.switchMap(requestUserInfo) {
+        it.networkState
+    }
+
+    val userInfo = Transformations.switchMap(requestUserInfo) {
+        it.data
+    }
+
+    fun getUserInfo(userID: Int) {
+        requestUserInfo.value = repository.getUserInfoByUserID(userID)
     }
 }
 

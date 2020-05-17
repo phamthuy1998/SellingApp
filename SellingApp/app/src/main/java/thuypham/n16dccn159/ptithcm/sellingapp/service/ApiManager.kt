@@ -1,5 +1,6 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.service
 
+import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -10,15 +11,19 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.*
 
 interface ApiManager {
     companion object {
-        private const val BASE_URL = ""
+
+        private const val localhost = "192.168.1.19"
+        private const val BASE_URL = "http://$localhost:800/api/"
 
         fun create(): ApiManager {
             val logger = HttpLoggingInterceptor()
             logger.level = HttpLoggingInterceptor.Level.BASIC
 
+            Log.d("BASE_URL", BASE_URL)
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
+
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
@@ -28,52 +33,61 @@ interface ApiManager {
         }
     }
 
-    @FormUrlEncoded
-    @POST("")
+    @GET("login")
     fun login(
-        @Field("username") email: String,
-        @Field("password") password: String
-    ): Call<Int>
+        @Query("username") username: String,
+        @Query("password") password: String
+    ): Call<ResultLogin>
 
-//    @FormUrlEncoded
+    //    @FormUrlEncoded
     @POST("")
     fun addOrder(
         @Body order: Order,
         @Body itemOrder: ArrayList<OrderItem>
     ): Call<Boolean>
 
-    @POST("")
-    fun signUp(user: User): Call<Int>
+    @POST("signUp")
+    fun signUp(
+        @Query("username") username: String,
+        @Query("password") password: String,
+        @Query("name") name: String,
+        @Query("email") email: String,
+        @Query("phone") phone: String,
+        @Query("address") address: String
+    ): Call<ResultLogin>
 
     @POST("")
     fun forgotPassword(email: String): Call<Int>
 
-    @GET("")
+    @POST("userInfoById")
+    fun getUserInfoByUserID(@Query("userId") userID: Int): Call<ArrayList<User>>
+
+    @GET("allSalePros")
     fun getListProductSale(): Call<ArrayList<Product>>
 
-    @GET("")
-    fun getAllProductSale(): Call<ArrayList<Product>>
+    @GET("allPros")
+    fun getAllProducts(): Call<ArrayList<Product>>
 
-    @GET("")
-    fun getListProductOfCategory(cateId: Int): Call<ArrayList<Product>>
+    @GET("allProsOfCate")
+    fun getListProductOfCategory(@Query("cateId") cateId: Int): Call<ArrayList<Product>>
 
-    @GET("")
-    fun getProductDetailByID(productID: Int): Call<Product>
+    @GET("proDetail")
+    fun getProductDetailByID(@Query("proId") productID: Int): Call<ArrayList<Product>>
 
     @POST("")
-    fun addCart(productID: Int): Call<Boolean>
+    fun addCart(productID: Int, userId: Int): Call<Boolean>
 
     @GET("")
     fun getListOrder(userId: Int): Call<ArrayList<Product>>
 
-    @GET("")
+    @GET("allCards")
     fun getListSlider(): Call<ArrayList<Slide>>
 
-    @GET("")
+    @GET("allCates")
     fun getListCategory(): Call<ArrayList<Category>>
 
-    @GET("")
-    fun getCartCount(userID: Int): Call<Int>
+    @GET("cartCount")
+    fun getCartCount(@Query("userId")userID: Int): Call<Int>
 
     @POST("")
     fun minusCart(userID: Int, productID: Int): Call<Boolean>
@@ -81,9 +95,9 @@ interface ApiManager {
     @POST("")
     fun plusCart(userID: Int, productID: Int): Call<Boolean>
 
-    @DELETE("")
-    fun delItemCart(userID: Int, productID: Int): Call<Boolean>
+    @DELETE("deleteCartItem")
+    fun delItemCart(@Query("userId")userID: Int,@Query("productId") productID: Int): Call<Boolean>
 
-    @GET("")
-    fun getProductsCart(userID: Int): Call<ArrayList<ProductCart>>
+    @GET("allProsOfCart")
+    fun getProductsCart(@Query("userId")userID: Int): Call<ArrayList<ProductCart>>
 }

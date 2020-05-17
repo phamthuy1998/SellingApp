@@ -74,6 +74,28 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
         )
     }
 
+    override fun getAllListProduct(): Result<ArrayList<Product>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseProducts = MutableLiveData<ArrayList<Product>>()
+        apiService.getAllPros(
+            onPrepared = {
+                networkState.postValue(NetworkState.LOADING)
+            },
+            onSuccess = {response ->
+                responseProducts.value = response?: arrayListOf()
+                networkState.postValue(NetworkState.LOADED)
+            },
+            onError = {errMessage ->
+                networkState.postValue(NetworkState.error(errMessage))
+            }
+        )
+
+        return Result(
+            data = responseProducts,
+            networkState = networkState
+        )
+    }
+
     override fun getProductCategory(cateId: Int): Result<ArrayList<Product>> {
         val networkState = MutableLiveData<NetworkState>()
         val responseProducts = MutableLiveData<ArrayList<Product>>()
@@ -106,7 +128,7 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
                 networkState.postValue(NetworkState.LOADING)
             },
             onSuccess = {response ->
-                responseProduct.value = response
+                responseProduct.value = response?.get(0)
                 networkState.postValue(NetworkState.LOADED)
             },
             onError = {errMessage ->
@@ -120,11 +142,12 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
         )
     }
 
-    override fun addCart(productID: Int): Result<Boolean>{
+    override fun addCart(productID: Int,userId: Int): Result<Boolean>{
         val networkState = MutableLiveData<NetworkState>()
         val responseAddCart= MutableLiveData<Boolean>()
         apiService.addCart(
             productID,
+            userId,
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },

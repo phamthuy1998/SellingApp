@@ -6,5 +6,5 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
 
 interface OrderRepository {
     fun order(order: Order, itemOrder: ArrayList<OrderItem>): Result<Boolean>
-    fun getAllOrderByNewest(): Result<ArrayList<Order>>
+    fun getAllOrder(): Result<ArrayList<Order>>
 }

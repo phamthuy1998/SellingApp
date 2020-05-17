@@ -67,9 +67,9 @@ class ProductsOfCategoryActivity : AppCompatActivity() {
 
             // Set cart count, check user is login yet? check by get userID from Shared pref
             val userId = getIntPref(USER_ID)
-            binding.cartCount = 0
-            if (userId != -1)
-                cartViewModel.getCartCount(userId)
+//            binding.cartCount = 0
+//            if (userId != -1)
+//                cartViewModel.getCartCount(userId)
 
         } else {
             Toast
@@ -121,8 +121,8 @@ class ProductsOfCategoryActivity : AppCompatActivity() {
                 if (it.status == Status.RUNNING) View.VISIBLE else View.GONE
         })
 
-        cartViewModel.cartCount.observe(this, Observer {
-            binding.cartCount = it ?: 0
-        })
+//        cartViewModel.cartCount.observe(this, Observer {
+//            binding.cartCount = it ?: 0
+//        })
     }
 }

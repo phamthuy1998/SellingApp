@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.UserViewModel" />
+
         <variable
             name="user"
             type="thuypham.n16dccn159.ptithcm.sellingapp.data.User" />
@@ -17,13 +19,13 @@
         android:background="@color/colorGrayBg">
 
         <androidx.appcompat.widget.Toolbar
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/tbEditProfile"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:background="@color/colorBlue">
+            android:background="@color/colorBlue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btn_back_edit"
@@ -47,11 +49,11 @@
         </androidx.appcompat.widget.Toolbar>
 
         <ScrollView
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tbEditProfile"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tbEditProfile">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,7 +104,7 @@
                         android:theme="@style/TextLabel">
 
                         <thuypham.n16dccn159.ptithcm.sellingapp.widget.EditTextField
-                            android:id="@+id/edt_name_sign_up"
+                            android:id="@+id/edtNameEdit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/name_sign_up"
@@ -123,7 +125,7 @@
                         android:theme="@style/TextLabel">
 
                         <thuypham.n16dccn159.ptithcm.sellingapp.widget.EditTextField
-                            android:id="@+id/edt_phone_sign_up"
+                            android:id="@+id/edtPhoneEdit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/phone"
@@ -143,7 +145,7 @@
                         android:theme="@style/TextLabel">
 
                         <thuypham.n16dccn159.ptithcm.sellingapp.widget.EditTextField
-                            android:id="@+id/edt_email_sign_up"
+                            android:id="@+id/edtEmailEdit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/email"
@@ -183,26 +185,20 @@
                     android:background="@color/colorGrayBg"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <CheckBox
+                        android:id="@+id/cbChangePw"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#F8F8F8">
-
-                        <CheckBox
-                            android:id="@+id/ck_change_pasword"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:padding="16dp"
-                            android:text="@string/change_pasword"
-                            android:textColor="@color/colorTextHint"
-                            android:textSize="18sp"
-                            android:theme="@style/checkBoxStyle" />
-
-                    </LinearLayout>
+                        android:background="#F8F8F8"
+                        android:onClick="onCheckChangePassword"
+                        android:padding="16dp"
+                        android:text="@string/change_pasword"
+                        android:textColor="@color/colorTextHint"
+                        android:textSize="18sp"
+                        android:theme="@style/checkBoxStyle" />
 
                     <LinearLayout
-                        android:id="@+id/ll_edit_profile"
+                        android:id="@+id/llEditPassword"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/colorWhiteBG"
@@ -221,7 +217,7 @@
                             app:passwordToggleTint="@color/colorGray">
 
                             <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_old_pasword_edit"
+                                android:id="@+id/edtOldPassword"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/old_password"
@@ -243,7 +239,7 @@
                             app:passwordToggleTint="@color/colorGray">
 
                             <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_new_pasword_edit"
+                                android:id="@+id/edtNewPass"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/new_password"
@@ -265,7 +261,7 @@
                             app:passwordToggleTint="@color/colorGray">
 
                             <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edt_retype_new_pasword_edit"
+                                android:id="@+id/edtReNewPass"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/retype_new_password"
@@ -281,17 +277,18 @@
         </ScrollView>
 
         <Button
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btn_save_change_edit"
+            style="@style/Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            style="@style/Button"
             android:linksClickable="true"
+            android:onClick="onClickChangeInfo"
             android:text="@string/save_changes"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressEditProfile"

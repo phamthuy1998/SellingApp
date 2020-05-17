@@ -3,10 +3,10 @@ package thuypham.n16dccn159.ptithcm.sellingapp.data
 import com.google.gson.annotations.SerializedName
 
 data class Slide(
-    @SerializedName("")
+    @SerializedName("Id")
     val id: Int?,
-    @SerializedName("")
+    @SerializedName("Image")
     val image: String?,
-    @SerializedName("")
+    @SerializedName("ProId")
     val productID: Int?
 )

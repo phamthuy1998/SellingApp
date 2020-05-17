@@ -3,12 +3,12 @@ package thuypham.n16dccn159.ptithcm.sellingapp.data
 import com.google.gson.annotations.SerializedName
 
 data class Category(
-    @SerializedName("")
+    @SerializedName("CateId")
     val id: Int?,
-    @SerializedName("")
+    @SerializedName("CateName")
     val name: String?,
-    @SerializedName("")
+    @SerializedName("CateImage")
     val image: String?,
-    @SerializedName("")
+    @SerializedName("Display")
     val display: Boolean?
 )

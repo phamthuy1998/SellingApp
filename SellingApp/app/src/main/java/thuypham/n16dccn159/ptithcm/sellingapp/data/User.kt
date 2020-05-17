@@ -3,24 +3,24 @@ package thuypham.n16dccn159.ptithcm.sellingapp.data
 import com.google.gson.annotations.SerializedName
 
 data class User(
-    @SerializedName("id")
+    @SerializedName("Id")
     val id: Int? = null,
-    @SerializedName("")
+    @SerializedName("Name")
     val name: String? = null,
-    @SerializedName("")
+    @SerializedName("Email")
     val email: String? = null,
-    @SerializedName("")
+    @SerializedName("Phone")
     val phone: String? = null,
-    @SerializedName("")
+    @SerializedName("Address")
     val address: String? = null,
-    @SerializedName("")
+    @SerializedName("Username")
     val username: String? = null,
-    @SerializedName("")
+    @SerializedName("Password")
     val password: String? = null,
-    @SerializedName("")
+    @SerializedName("Avatar")
     val avatar: String? = null,
-    @SerializedName("")
+    @SerializedName("RoleId")
     val roleId: Int? = null,
-    @SerializedName("")
+    @SerializedName("Lock")
     val lock: Boolean? = null
 )

@@ -11,6 +11,7 @@ import thuypham.n16dccn159.ptithcm.sellingapp.repository.ProductRepository
 class ProductsViewModel(private val repository: ProductRepository) : ViewModel() {
 
     private val requestAllProductSale = MutableLiveData<Result<ArrayList<Product>>>()
+    private val requestAllProducts = MutableLiveData<Result<ArrayList<Product>>>()
     private val requestAllProductOfCategory = MutableLiveData<Result<ArrayList<Product>>>()
     private val requestProduct = MutableLiveData<Result<Product>>()
     private val requestAddCart = MutableLiveData<Result<Boolean>>()
@@ -25,6 +26,18 @@ class ProductsViewModel(private val repository: ProductRepository) : ViewModel()
 
     fun getAllListProductSale() {
         requestAllProductSale.value = repository.getAllListProductSale()
+    }
+
+    val listProducts = Transformations.switchMap(requestAllProducts) {
+        it.data
+    }
+
+    val networkStateAllPros = Transformations.switchMap(requestAllProducts) {
+        it.networkState
+    }
+
+    fun getAllProducts() {
+        requestAllProducts.value = repository.getAllListProduct()
     }
 
     val listProductCategory = Transformations.switchMap(requestAllProductOfCategory) {
@@ -55,8 +68,8 @@ class ProductsViewModel(private val repository: ProductRepository) : ViewModel()
         it.networkState
     }
 
-    fun addCart(productId: Int) {
-        requestAddCart.value = repository.addCart(productId)
+    fun addCart(productId: Int, userD: Int) {
+        requestAddCart.value = repository.addCart(productId, userD)
     }
 
 

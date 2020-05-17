@@ -14,7 +14,7 @@ class ProductCartAdapter(
     private var listProductSale: ArrayList<ProductCart> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        PlantViewHolder(
+        ProductCartViewHolder(
             ItemProductCartBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -25,7 +25,7 @@ class ProductCartAdapter(
     override fun getItemCount(): Int = listProductSale.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as PlantViewHolder).bind(listProductSale[position])
+        (holder as ProductCartViewHolder).bind(listProductSale[position])
     }
 
     fun setProductList(list: List<ProductCart>) {
@@ -33,10 +33,11 @@ class ProductCartAdapter(
             clear()
             addAll(list)
         }
+
         notifyDataSetChanged()
     }
 
-    inner class PlantViewHolder(
+    inner class ProductCartViewHolder(
         private val binding: ItemProductCartBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 

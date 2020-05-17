@@ -49,8 +49,8 @@ class ProductDetailActivity : AppCompatActivity() {
             // Set cart count, check user is login yet? check by get userID from Shared pref
             val userId = getIntPref(USER_ID)
             binding.cartCount = 0
-            if (userId != -1)
-                cartViewModel.getCartCount(userId)
+//            if (userId != -1)
+//                cartViewModel.getCartCount(userId)
 
             productViewModel.getProductById(productId!!)
             bindViewModel()
@@ -78,7 +78,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun addCart() {
         val userId = getIntPref(USER_ID)
         if (userId != -1) {
-            productId?.let { productViewModel.addCart(it) }
+            productId?.let { productViewModel.addCart(it, userId) }
             showBottomDialogAddCart()
         }
         // If haven't login , intent to login activity
@@ -116,8 +116,8 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         })
 
-        cartViewModel.cartCount.observe(this, Observer {
-            binding.cartCount = it ?: 0
-        })
+//        cartViewModel.cartCount.observe(this, Observer {
+//            binding.cartCount = it ?: 0
+//        })
     }
 }

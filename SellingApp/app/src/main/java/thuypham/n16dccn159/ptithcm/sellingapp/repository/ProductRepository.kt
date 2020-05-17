@@ -8,7 +8,8 @@ interface ProductRepository {
     fun getListProductSale(): Result<ArrayList<Product>>
     fun getListSlide(): Result<ArrayList<Slide>>
     fun getAllListProductSale(): Result<ArrayList<Product>>
+    fun getAllListProduct(): Result<ArrayList<Product>>
     fun getProductCategory(cateId: Int): Result<ArrayList<Product>>
     fun getProductByID(productID: Int): Result<Product>
-    fun addCart(productID: Int): Result<Boolean>
+    fun addCart(productID: Int, userId: Int): Result<Boolean>
 }

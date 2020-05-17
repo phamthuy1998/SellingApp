@@ -32,7 +32,7 @@ class OrderRepositoryImpl(private val apiService: ApiService) : OrderRepository 
         )
     }
 
-    override fun getAllOrderByNewest(): Result<ArrayList<Order>> {
+    override fun getAllOrder(): Result<ArrayList<Order>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

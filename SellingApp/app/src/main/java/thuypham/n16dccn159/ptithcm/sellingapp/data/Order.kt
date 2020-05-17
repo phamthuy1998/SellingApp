@@ -1,37 +1,38 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.data
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 data class Order(
-    @SerializedName("")
+    @SerializedName("Id")
     var id: Int? = null,
-    @SerializedName("")
-    var buyDate: Date? = null,
-    @SerializedName("")
+    @SerializedName("UserId")
+    var userID: Int? = null,
+    @SerializedName("BuyDate")
+    var buyDate: String? = null,
+    @SerializedName("Name")
     var name: String? = null,
-    @SerializedName("")
+    @SerializedName("Phone")
     var phone: String? = null,
-    @SerializedName("")
+    @SerializedName("Email")
     var email: String? = null,
-    @SerializedName("")
+    @SerializedName("Address")
     var address: String? = null,
-    @SerializedName("")
+    @SerializedName("Note")
     var note: String? = null,
-    @SerializedName("")
-    var statusID: Boolean? = null
+    @SerializedName("StatusId")
+    var statusID: Int? = null
 )
 
 data class OrderItem(
-    @SerializedName("")
+    @SerializedName("Id")
     var id: Int? = null,
-    @SerializedName("")
+    @SerializedName("Quantity")
     var quantity: Int? = null,
-    @SerializedName("")
+    @SerializedName("UnitPrice")
     var unitPrice: Float? = null,
-    @SerializedName("")
+    @SerializedName("ProId")
     var productId: Int? = null,
-    @SerializedName("")
+    @SerializedName("OrderId")
     var orderID: Int? = null
 )
 

@@ -25,24 +25,26 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
 @BindingAdapter("textDiscount")
 fun bindTextDiscount(view: TextView, discount: Float?) {
     if (discount != 0.toFloat()) {
-        view.text = " - " + discount.toString() + "%"
+        view.text = " - " + (discount?.times(100))?.toInt().toString() + "%"
     }
 }
 
 @BindingAdapter(value = ["price", "discount"], requireAll = false)
-fun bindTextPrice(view: TextView, price: Float?, discount: Float) {
-    val df = DecimalFormat("#,###,###")
-    df.roundingMode = RoundingMode.CEILING
-    val priceSale = price?.minus(((discount * 0.01) * price))
-    val priceSelling = df.format(priceSale) + " đ"
-    view.text = priceSelling
+fun bindTextPrice(view: TextView, price: Float?, discount: Float?) {
+    if (price != null && discount != null) {
+        val df = DecimalFormat("#,###,###")
+        df.roundingMode = RoundingMode.CEILING
+        val priceSale = price.minus((price.times(discount)))
+        val priceSelling = df.format(priceSale) + " đ"
+        view.text = priceSelling
+    }
 }
 
 @BindingAdapter("txtPrice")
 fun bindPrice(view: TextView, price: Float?) {
     val df = DecimalFormat("#,###,###")
     df.roundingMode = RoundingMode.CEILING
-    val priceSelling = df.format(price) + " đ"
+    val priceSelling = df.format(price?:0) + " đ"
     view.text = priceSelling
 }
 

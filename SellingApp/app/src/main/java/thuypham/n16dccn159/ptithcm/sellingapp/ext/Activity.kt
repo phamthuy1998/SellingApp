@@ -8,12 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import thuypham.n16dccn159.ptithcm.sellingapp.R
 
+
 fun Activity.hideSoftKeyboard() {
     val inputMethodManager =
         getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as? InputMethodManager
 
     inputMethodManager?.hideSoftInputFromWindow(
         currentFocus?.windowToken, 0
+    )
+}
+
+fun Activity.showKeyBoard() {
+    val inputMethodManager =
+        getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager?
+    inputMethodManager!!.toggleSoftInputFromWindow(
+        currentFocus?.windowToken,
+        InputMethodManager.SHOW_FORCED,
+        0
     )
 }
 
