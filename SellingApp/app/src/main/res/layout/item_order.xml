@@ -88,15 +88,15 @@
             app:layout_constraintStart_toEndOf="@id/tv_tt_order_detail_status"
             app:layout_constraintTop_toTopOf="@id/tv_tt_order_detail_status" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_order_ic_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_item_order_detail_id"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_item_order_detail_id"
-            app:srcCompat="@drawable/ic_success" />
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/iv_order_ic_status"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tv_item_order_detail_id"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tv_item_order_detail_id"-->
+<!--            app:srcCompat="@drawable/ic_success" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

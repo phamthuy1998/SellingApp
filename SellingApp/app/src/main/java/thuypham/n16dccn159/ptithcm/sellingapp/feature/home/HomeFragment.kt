@@ -52,8 +52,6 @@ class HomeFragment : Fragment() {
             this,
             Injection.provideHomeViewModelFactory()
         )[HomeViewModel::class.java]
-        homeViewModel.getListSlide()
-        homeViewModel.getListProductSale()
     }
 
     override fun onCreateView(
@@ -67,7 +65,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         addEvents()
-//        initSlide()
         bindViewModel()
     }
 

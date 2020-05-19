@@ -7,7 +7,7 @@
 
         <variable
             name="product"
-            type="thuypham.n16dccn159.ptithcm.sellingapp.data.ProductCart" />
+            type="thuypham.n16dccn159.ptithcm.sellingapp.data.OrderItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,8 +51,7 @@
 
         <TextView
             android:id="@+id/tv_price_product_conf_order"
-            discount="@{product.discount}"
-            price="@{product.price}"
+            txtPrice="@{product.unitPrice}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

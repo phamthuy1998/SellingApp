@@ -4,10 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Order
-import thuypham.n16dccn159.ptithcm.sellingapp.data.OrderStatus
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
-import thuypham.n16dccn159.ptithcm.sellingapp.data.ResultApi
+import thuypham.n16dccn159.ptithcm.sellingapp.data.*
 import thuypham.n16dccn159.ptithcm.sellingapp.repository.OrderRepository
 
 class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
@@ -58,8 +55,36 @@ class OrderViewModel(private val repository: OrderRepository) : ViewModel() {
         it.networkState
     }
 
-    fun getAllOrder(userID: Int, statusID: Int?=null) {
+    fun getAllOrder(userID: Int, statusID: Int? = null) {
         requestAllOrders.value = repository.getAllOrder(userID, statusID)
+    }
+
+    /*         Cancel order    */
+    private val requestCancelOrder = MutableLiveData<Result<ResultApi>>()
+
+    val cancelOrder = Transformations.switchMap(requestCancelOrder) {
+        it.data
+    }
+    val networkCancelOrder = Transformations.switchMap(requestCancelOrder) {
+        it.networkState
+    }
+
+    fun cancelOrder(orderId: Int) {
+        requestCancelOrder.value = repository.cancelOrder(orderId)
+    }
+
+    /*         ITEM ORDER   */
+    private val requestItemOrder = MutableLiveData<Result<ArrayList<OrderItem>>>()
+
+    val orderItem = Transformations.switchMap(requestItemOrder) {
+        it.data
+    }
+    val networkOrderItem = Transformations.switchMap(requestItemOrder) {
+        it.networkState
+    }
+
+    fun getAllOrderItem(orderId: Int) {
+        requestItemOrder.value = repository.getAllOrderItem(orderId)
     }
 }
 

@@ -15,7 +15,6 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     private val requestPlusCart = MutableLiveData<Result<Boolean>>()
     private val requestMinusCart = MutableLiveData<Result<Boolean>>()
     private val requestDelCart = MutableLiveData<Result<Boolean>>()
-    private val listProductCartItem = MutableLiveData<Result<Boolean>>()
 
     val name = MutableLiveData<String>().apply { value = "" }
     val phone = MutableLiveData<String>().apply { value = "" }

@@ -6,8 +6,10 @@ import android.graphics.Paint
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import thuypham.n16dccn159.ptithcm.sellingapp.data.OrderStatus
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -30,6 +32,26 @@ fun bindTextDiscount(view: TextView, discount: Float?) {
     }
 }
 
+/*
+@BindingAdapter("data")
+fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, data: T) {
+    if (recyclerView.adapter is BindAdapter<*>) {
+        (recyclerView.adapter as BindAdapter<T>).setData(data)
+    }
+}
+*/
+
+@BindingAdapter(value = ["statusID", "listStatus"], requireAll = false)
+fun setOrderStatus(view: TextView, statusID: Int?, listStatus: ArrayList<OrderStatus>?) {
+    if (listStatus != null)
+        for (status in listStatus) {
+            if (status.id == statusID) {
+                view.text = status.statusName
+                break;
+            }
+        }
+}
+
 @BindingAdapter(value = ["price", "discount"], requireAll = false)
 fun bindTextPrice(view: TextView, price: Float?, discount: Float?) {
     if (price != null && discount != null) {
@@ -45,7 +67,7 @@ fun bindTextPrice(view: TextView, price: Float?, discount: Float?) {
 fun bindPrice(view: TextView, price: Float?) {
     val df = DecimalFormat("#,###,###")
     df.roundingMode = RoundingMode.CEILING
-    val priceSelling = df.format(price?:0) + " đ"
+    val priceSelling = df.format(price ?: 0) + " đ"
     view.text = priceSelling
 }
 
@@ -53,7 +75,7 @@ fun bindPrice(view: TextView, price: Float?) {
 fun bindPriceDiscount(view: TextView, price: Float?) {
     val df = DecimalFormat("#,###,###")
     df.roundingMode = RoundingMode.CEILING
-    val priceSelling = df.format(price?:0) + " đ"
+    val priceSelling = df.format(price ?: 0) + " đ"
     view.text = priceSelling
     view.paintFlags = view.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 }

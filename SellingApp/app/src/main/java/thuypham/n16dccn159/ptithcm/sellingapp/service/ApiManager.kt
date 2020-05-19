@@ -13,6 +13,7 @@ interface ApiManager {
 //        private const val localhost = "192.168.1.19"
 //        private const val BASE_URL = "http://$localhost:800/api/"
 
+        private const val API_KEY = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         private const val BASE_URL = "http://ecommerceweb2020.azurewebsites.net/api/"
 
         fun create(): ApiManager {
@@ -31,6 +32,13 @@ interface ApiManager {
                 .create(ApiManager::class.java)
         }
     }
+
+//    @GET("now_playing")
+//    fun getMovie(
+//        @Query("api_key") apiKey: String,
+//        @Query("page") page: Int
+//    ): Call<ResultApi>
+
 
     @GET("login")
     fun login(
@@ -98,7 +106,10 @@ interface ApiManager {
     fun getAllOrder(@Query("userId") userId: Int): Call<ArrayList<Order>>
 
     @GET("orderByStatus")
-    fun getAllOrderByStatus(@Query("userId") userId: Int,@Query("statusId") statusId: Int): Call<ArrayList<Order>>
+    fun getAllOrderByStatus(
+        @Query("userId") userId: Int,
+        @Query("statusId") statusId: Int
+    ): Call<ArrayList<Order>>
 
     @GET("allCards")
     fun getListSlider(): Call<ArrayList<Slide>>
@@ -106,8 +117,16 @@ interface ApiManager {
     @GET("allOrderStatus")
     fun getAllOrderStatus(): Call<ArrayList<OrderStatus>>
 
+    @PUT("cancelOrder")
+    fun cancelOrder(
+        @Query("orderId") orderId: Int
+    ): Call<ResultApi>
+
     @GET("allCates")
     fun getListCategory(): Call<ArrayList<Category>>
+
+    @GET("orderItemOfOrder")
+    fun getAllOrderItem( @Query("orderId") orderId: Int): Call<ArrayList<OrderItem>>
 
     @GET("cartCount")
     fun getCartCount(@Query("userId") userID: Int): Call<Int>

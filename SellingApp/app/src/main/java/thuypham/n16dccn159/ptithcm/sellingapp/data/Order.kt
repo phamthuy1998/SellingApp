@@ -4,6 +4,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+
+@Parcelize
 data class Order(
     @SerializedName("Id")
     var id: Int? = null,
@@ -23,7 +25,7 @@ data class Order(
     var note: String? = null,
     @SerializedName("StatusId")
     var statusID: Int? = null
-)
+):Parcelable
 
 data class OrderItem(
     @SerializedName("Id")
@@ -34,6 +36,10 @@ data class OrderItem(
     var unitPrice: Float? = null,
     @SerializedName("ProId")
     var productId: Int? = null,
+    @SerializedName("Name")
+    val name: String? = null,
+    @SerializedName("Image")
+    val image: String? = null,
     @SerializedName("OrderId")
     var orderID: Int? = null
 )

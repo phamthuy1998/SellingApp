@@ -1,5 +1,6 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.feature.order
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -16,10 +17,12 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.Status
 import thuypham.n16dccn159.ptithcm.sellingapp.di.Injection
 import thuypham.n16dccn159.ptithcm.sellingapp.ext.*
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.cart.CartActivity
+import thuypham.n16dccn159.ptithcm.sellingapp.feature.main.MainActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.order.adapter.OrderAdapter
 import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.OrderViewModel
 
 class OrderActivity : AppCompatActivity() {
+
     private val orderViewModel: OrderViewModel by lazy {
         ViewModelProvider(
             this,
@@ -28,11 +31,13 @@ class OrderActivity : AppCompatActivity() {
     }
 
     private val orderAdapter: OrderAdapter by lazy {
-        OrderAdapter() { order -> onItemClick(order) }
+        OrderAdapter { order -> onItemClick(order) }
     }
 
     private fun onItemClick(order: Order) {
-
+        val intent = Intent(this, OrderDetailActivity::class.java)
+        intent.putExtra(ORDER, order)
+       startActivity(intent)
     }
 
     private var statusOrder: OrderStatus? = null
@@ -41,17 +46,31 @@ class OrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order)
         statusOrder = intent.getParcelableExtra(ORDER_STATUS)
+
+        orderViewModel.getAllStatusOrder()
         initViews()
         getDataByStatus()
         setEvents()
         bindViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getDataByStatus()
+    }
     private fun bindViewModel() {
-        orderViewModel.listOrder.observe(this){
-
+        orderViewModel.listOrder.observe(this) {
+            if (it.size!=0) {
+                orderAdapter.setOrderList(it)
+                ll_order_empty.gone()
+            }else ll_order_empty.visible()
         }
-        orderViewModel.networkListOrder.observe(this){
+
+        orderViewModel.dataStatusOrder.observe(this) {
+            orderAdapter.setOrderStatusList(it)
+        }
+
+        orderViewModel.networkListOrder.observe(this) {
             when (it.status) {
                 Status.RUNNING -> progressOrder.visible()
                 Status.SUCCESS -> {
@@ -62,7 +81,6 @@ class OrderActivity : AppCompatActivity() {
                     Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
                 }
             }
-
         }
     }
 
@@ -77,7 +95,7 @@ class OrderActivity : AppCompatActivity() {
             orderViewModel.getAllOrder(getIntPref(USER_ID))
             tvTbOrder.text = getString(R.string.order_management)
         } else {
-            orderViewModel.getAllOrder(getIntPref(USER_ID))
+            orderViewModel.getAllOrder(getIntPref(USER_ID), statusOrder?.id)
             tvTbOrder.text = statusOrder?.statusName
         }
     }
@@ -88,11 +106,11 @@ class OrderActivity : AppCompatActivity() {
             getDataByStatus()
             swRefreshOrder.isRefreshing = false
         }
+        btn_continue_shopping_order.setOnClickListener { startActivity<MainActivity>() ; finish()}
     }
 
     fun onclickBack(view: View) {
         finish()
     }
-
 
 }

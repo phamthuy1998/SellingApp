@@ -208,6 +208,17 @@ class ApiService(private val apiApi: ApiManager) {
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
 
+    fun cancelOrder(
+        orderId: Int,
+        onPrepared: () -> Unit,
+        onSuccess: (ResultApi?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.cancelOrder(orderId)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
     fun getAllOrder(
         userID: Int, statusID: Int?,
         onPrepared: () -> Unit,
@@ -216,6 +227,17 @@ class ApiService(private val apiApi: ApiManager) {
     ) {
         val request = if (statusID == null) apiApi.getAllOrder(userID)
         else apiApi.getAllOrderByStatus(userID, statusID)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun getAllOrderItem(
+        orderID : Int,
+        onPrepared: () -> Unit,
+        onSuccess: (ArrayList<OrderItem>?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request =  apiApi.getAllOrderItem(orderID)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
