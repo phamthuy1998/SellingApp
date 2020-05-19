@@ -18,6 +18,7 @@ import androidx.lifecycle.observe
 import kotlinx.android.synthetic.main.fragment_user.*
 import org.jetbrains.anko.support.v4.startActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.R
+import thuypham.n16dccn159.ptithcm.sellingapp.data.OrderStatus
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Status
 import thuypham.n16dccn159.ptithcm.sellingapp.databinding.FragmentUserBinding
 import thuypham.n16dccn159.ptithcm.sellingapp.di.Injection
@@ -25,6 +26,8 @@ import thuypham.n16dccn159.ptithcm.sellingapp.ext.*
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.authentication.EditProfileActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.authentication.LoginActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.feature.order.OrderActivity
+import thuypham.n16dccn159.ptithcm.sellingapp.feature.user.adapter.OrderStatusAdapter
+import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.OrderViewModel
 import thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.UserViewModel
 
 /**
@@ -39,10 +42,22 @@ class UserFragment : Fragment() {
         )[UserViewModel::class.java]
     }
 
+    private val orderViewModel: OrderViewModel by lazy {
+        ViewModelProvider(
+            this,
+            Injection.provideOrderViewModelFactory()
+        )[OrderViewModel::class.java]
+    }
+
+    private val statusAdapter: OrderStatusAdapter by lazy {
+        OrderStatusAdapter() { orderStatus -> showOrderByStatusId(orderStatus) }
+    }
+
     private lateinit var binding: FragmentUserBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userViewModel.getUserInfo(requireActivity().getIntPref(USER_ID) ?:0)
+        userViewModel.getInfoUser(requireActivity().getIntPref(USER_ID) ?: 0)
+        orderViewModel.getAllStatusOrder()
     }
 
     override fun onCreateView(
@@ -57,14 +72,38 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addEvents()
+        initViews()
         bindViewModel()
+    }
+
+    private fun initViews() {
+        binding.rvOrderStatus.adapter = statusAdapter
+        binding.rvOrderStatus.setItemViewCacheSize(20)
+        binding.rvOrderStatus.setHasFixedSize(true)
     }
 
     private fun bindViewModel() {
         userViewModel.userInfo.observe(viewLifecycleOwner) {
             binding.user = it
         }
+
         userViewModel.networkUserInfo.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.RUNNING -> binding.progressUser.visible()
+                Status.SUCCESS -> {
+                    binding.progressUser.gone()
+                }
+                Status.FAILED -> {
+                    binding.progressUser.gone()
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        orderViewModel.dataStatusOrder.observe(viewLifecycleOwner) {
+            statusAdapter.setOrderStatusList(it)
+        }
+        orderViewModel.networkStatusOrder.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.RUNNING -> binding.progressUser.visible()
                 Status.SUCCESS -> {
@@ -78,6 +117,12 @@ class UserFragment : Fragment() {
         }
     }
 
+    private fun showOrderByStatusId(orderStatus: OrderStatus) {
+        val intent = Intent(context, OrderActivity::class.java)
+        intent.putExtra(ORDER_STATUS, orderStatus)
+        requireActivity().startActivity(intent)
+    }
+
     private fun addEvents() {
         /* imageView.load("") {
              placeholder()
@@ -85,26 +130,6 @@ class UserFragment : Fragment() {
          }*/
         tv_manage_order.setOnClickListener {
             startActivity<OrderActivity>()
-        }
-        tv_received_order.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra(ORDER_STATUS_ID, id)
-            requireActivity().startActivity(intent)
-        }
-        tv_order_waiting_shiping.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra(ORDER_STATUS_ID, id)
-            requireActivity().startActivity(intent)
-        }
-        tv_order_success.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra(ORDER_STATUS_ID, id)
-            requireActivity().startActivity(intent)
-        }
-        tv_order_canceled.setOnClickListener {
-            val intent = Intent(context, OrderActivity::class.java)
-            intent.putExtra(ORDER_STATUS_ID, id)
-            requireActivity().startActivity(intent)
         }
 
         btn_sign_out.setOnClickListener { confirmSignOut() }

@@ -61,29 +61,30 @@ class AddressCartFragment : Fragment() {
         }
 
         if (binding.edtPhoneAddress.textTrim() == "") {
-            binding.edtNameAddress.error = getString(R.string.error_input_phone_not_entered)
+            binding.edtPhoneAddress.error = getString(R.string.error_input_phone_not_entered)
             isTextOk = false
         } else if (!isValidPhoneNumber(binding.edtPhoneAddress.textTrim())) {
-            binding.edtNameAddress.error = getString(R.string.error_input_phone_not_correct)
+            binding.edtPhoneAddress.error = getString(R.string.error_input_phone_not_correct)
             isTextOk = false
         }
 
         if (binding.edtAddress.textTrim() == "") {
-            binding.edtNameAddress.error = getString(R.string.error_input_address_not_entered)
+            binding.edtAddress.error = getString(R.string.error_input_address_not_entered)
             isTextOk = false
         }
 
         if (binding.edtEmailCart.textTrim() == "") {
-            binding.edtNameAddress.error = getString(R.string.error_input_email_not_entered)
+            binding.edtEmailCart.error = getString(R.string.error_input_email_not_entered)
             isTextOk = false
         } else if (!isValidEmail(binding.edtEmailCart.textTrim())) {
-            binding.edtNameAddress.error = getString(R.string.err_email_not_valid)
+            binding.edtEmailCart.error = getString(R.string.err_email_not_valid)
             isTextOk = false
         }
         if (isTextOk) showConfirmFragment()
     }
 
     private fun showConfirmFragment() {
+
         requireActivity().replaceFragment(
             id = R.id.frmCart,
             fragment = ConfirmOrderFragment(),

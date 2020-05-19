@@ -9,6 +9,6 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
-       replaceFragment(id = R.id.frmCart, fragment = CartFragment(), addToBackStack = true)
+       replaceFragment(id = R.id.frmCart, fragment = CartFragment())
     }
 }

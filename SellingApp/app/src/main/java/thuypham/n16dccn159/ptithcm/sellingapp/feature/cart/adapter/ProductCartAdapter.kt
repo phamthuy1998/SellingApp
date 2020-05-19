@@ -8,7 +8,7 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.ProductCart
 import thuypham.n16dccn159.ptithcm.sellingapp.databinding.ItemProductCartBinding
 
 class ProductCartAdapter(
-    private var onProductClick: (id:Int, type: CartType) -> Unit
+    private var onProductClick: (id: Int, type: CartType) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listProductSale: ArrayList<ProductCart> = arrayListOf()
@@ -45,10 +45,30 @@ class ProductCartAdapter(
             binding.apply {
                 product = item
                 executePendingBindings()
-                itemProductCart.setOnClickListener { item.id?.let { it1 -> onProductClick(it1, CartType.CLICK) } }
-                btnMinus.setOnClickListener { item.id?.let { it1 -> onProductClick(it1, CartType.MINUS) } }
-                btnPlus.setOnClickListener { item.id?.let { it1 -> onProductClick(it1, CartType.PLUS) } }
-                btnDelCart.setOnClickListener { item.id?.let { it1 -> onProductClick(it1, CartType.DEL) } }
+                itemProductCart.setOnClickListener {
+                    item.id?.let { it1 ->
+                        onProductClick(it1, CartType.CLICK)
+                    }
+                }
+                btnMinus.setOnClickListener {
+                    item.id?.let { it1 ->
+//                        item.quantity?.minus(1)
+//                        binding.tvNumberPrCart.text =  item.quantity.toString()
+                        onProductClick(it1, CartType.MINUS)
+                    }
+                }
+                btnPlus.setOnClickListener {
+                    item.id?.let { it1 ->
+//                        item.quantity?.minus(1)
+//                        binding.tvNumberPrCart.text = (item.quantity?.plus(1)).toString()
+                        onProductClick(it1, CartType.PLUS)
+                    }
+                }
+                btnDelCart.setOnClickListener {
+                    item.id?.let { it1 ->
+                        onProductClick(it1, CartType.DEL)
+                    }
+                }
             }
         }
     }

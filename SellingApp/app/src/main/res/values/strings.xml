@@ -206,5 +206,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="selling_products">Selling products</string>
     <string name="user_name">User name</string>
+    <string name="note">Note</string>
+    <string name="address_order">Address order</string>
 
 </resources>

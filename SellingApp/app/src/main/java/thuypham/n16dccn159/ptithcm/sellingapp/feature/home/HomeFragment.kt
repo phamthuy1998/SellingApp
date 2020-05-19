@@ -38,7 +38,9 @@ class HomeFragment : Fragment() {
     }
 
     private val slideAdapter: SlidingImageAdapter by lazy {
-        SlidingImageAdapter(requireContext(), arrSlide)
+        SlidingImageAdapter(requireContext(), arrSlide){
+            productID -> showProductDetail(productID)
+        }
     }
 
     private var arrSlide: ArrayList<Slide> = arrayListOf()
@@ -70,8 +72,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun playSlide() {
-
-        pagerHome.adapter= SlidingImageAdapter(requireContext(), arrSlide)
+        pagerHome.adapter= SlidingImageAdapter(requireContext(), arrSlide){
+                productID -> showProductDetail(productID)
+        }
         indicator.setViewPager(pagerHome)
 
         val density = resources.displayMetrics.density
@@ -138,7 +141,6 @@ class HomeFragment : Fragment() {
 
     private fun addEvents() {
         swRefreshHome.setOnRefreshListener { homeViewModel.refresh() }
-        pagerHome.setOnClickListener { showProductDetail(arrSlide[currentPage].productID) }
     }
 
     private fun showProductDetail(id: Int?) {

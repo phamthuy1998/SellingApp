@@ -17,11 +17,11 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
-                responseProducts.value = response?: arrayListOf()
+            onSuccess = { response ->
+                responseProducts.value = response ?: arrayListOf()
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -38,11 +38,11 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
-                responseSlides.value = response?: arrayListOf()
+            onSuccess = { response ->
+                responseSlides.value = response ?: arrayListOf()
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -59,11 +59,11 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
-                responseProducts.value = response?: arrayListOf()
+            onSuccess = { response ->
+                responseProducts.value = response ?: arrayListOf()
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -81,11 +81,11 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
-                responseProducts.value = response?: arrayListOf()
+            onSuccess = { response ->
+                responseProducts.value = response ?: arrayListOf()
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -104,11 +104,11 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
-                responseProducts.value = response?: arrayListOf()
+            onSuccess = { response ->
+                responseProducts.value = response ?: arrayListOf()
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -127,11 +127,13 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response ->
-                responseProduct.value = response?.get(0)
+            onSuccess = { response ->
+                if (response?.size != 0)
+                    responseProduct.value = response?.get(0)
+                else responseProduct.value = null
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )
@@ -142,20 +144,21 @@ class ProductRepositoryImpl(private val apiService: ApiService) : ProductReposit
         )
     }
 
-    override fun addCart(productID: Int,userId: Int): Result<Boolean>{
+    override fun addCart(productID: Int, userId: Int, quantity: Int): Result<Boolean> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseAddCart= MutableLiveData<Boolean>()
+        val responseAddCart = MutableLiveData<Boolean>()
         apiService.addCart(
             productID,
             userId,
+            quantity,
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = {response->
+            onSuccess = { response ->
                 responseAddCart.value = response
                 networkState.postValue(NetworkState.LOADED)
             },
-            onError = {errMessage ->
+            onError = { errMessage ->
                 networkState.postValue(NetworkState.error(errMessage))
             }
         )

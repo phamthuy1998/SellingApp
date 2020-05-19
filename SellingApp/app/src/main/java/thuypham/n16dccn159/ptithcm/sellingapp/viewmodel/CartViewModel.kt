@@ -17,14 +17,11 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     private val requestDelCart = MutableLiveData<Result<Boolean>>()
     private val listProductCartItem = MutableLiveData<Result<Boolean>>()
 
-    val name:  String = ""
-    val phone:  String = ""
-    val address:  String = ""
-    val email:  String = ""
-
-    fun isValidateTextInput(): Boolean =
-        name.isNotEmpty() && address.isNotEmpty() && phone.isNotEmpty() && email.isNotEmpty()
-
+    val name = MutableLiveData<String>().apply { value = "" }
+    val phone = MutableLiveData<String>().apply { value = "" }
+    val address = MutableLiveData<String>().apply { value = "" }
+    val email = MutableLiveData<String>().apply { value = "" }
+    val note = MutableLiveData<String>().apply { value = "" }
 
     val cartCount = Transformations.switchMap(requestCartCount) {
         it.data
@@ -49,8 +46,8 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
         it.networkState
     }
 
-    fun plusCart(userID: Int, productId: Int) {
-        requestPlusCart.value = repository.plusCart(userID, productId)
+    fun plusCart(userID: Int, productId: Int, quantity: Int) {
+        requestPlusCart.value = repository.plusCart(userID, productId, quantity)
     }
 
     val networkMinusCart = Transformations.switchMap(requestMinusCart) {
@@ -63,6 +60,10 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
 
     val networkDelCart = Transformations.switchMap(requestDelCart) {
         it.networkState
+    }
+
+    val delCart = Transformations.switchMap(requestDelCart) {
+        it.data
     }
 
     fun delCartItem(userID: Int, productId: Int) {

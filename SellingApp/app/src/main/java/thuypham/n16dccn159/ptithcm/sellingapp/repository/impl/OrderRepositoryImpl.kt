@@ -1,24 +1,28 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.repository.impl
 
 import androidx.lifecycle.MutableLiveData
-import thuypham.n16dccn159.ptithcm.sellingapp.data.NetworkState
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Order
-import thuypham.n16dccn159.ptithcm.sellingapp.data.OrderItem
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
+import thuypham.n16dccn159.ptithcm.sellingapp.data.*
 import thuypham.n16dccn159.ptithcm.sellingapp.repository.OrderRepository
 import thuypham.n16dccn159.ptithcm.sellingapp.service.ApiService
 
 class OrderRepositoryImpl(private val apiService: ApiService) : OrderRepository {
-    override fun order(order: Order, itemOrder: ArrayList<OrderItem>): Result<Boolean> {
+    override fun order(
+        userID: Int,
+        name: String,
+        phone: String,
+        email: String,
+        address: String,
+        note: String
+    ): Result<ResultApi> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseLogin = MutableLiveData<Boolean>()
+        val response = MutableLiveData<ResultApi>()
         apiService.addOrder(
-            order, itemOrder,
+            userID, name, phone, email, address, note,
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
-            onSuccess = { response ->
-                responseLogin.value = response
+            onSuccess = { data ->
+                response.value = data
                 networkState.postValue(NetworkState.LOADED)
             },
             onError = { errMessage ->
@@ -27,13 +31,54 @@ class OrderRepositoryImpl(private val apiService: ApiService) : OrderRepository 
         )
 
         return Result(
-            data = responseLogin,
+            data = response,
             networkState = networkState
         )
     }
 
-    override fun getAllOrder(): Result<ArrayList<Order>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getAllOrder(userID: Int, statusID: Int?): Result<ArrayList<Order>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<ArrayList<Order>>()
+        apiService.getAllOrder(
+            userID, statusID,
+            onPrepared = {
+                networkState.postValue(NetworkState.LOADING)
+            },
+            onSuccess = { data ->
+                response.value = data
+                networkState.postValue(NetworkState.LOADED)
+            },
+            onError = { errMessage ->
+                networkState.postValue(NetworkState.error(errMessage))
+            }
+        )
+
+        return Result(
+            data = response,
+            networkState = networkState
+        )
+    }
+
+    override fun getAllOrderStatus(): Result<ArrayList<OrderStatus>> {
+        val networkState = MutableLiveData<NetworkState>()
+        val response = MutableLiveData<ArrayList<OrderStatus>>()
+        apiService.getAllOrderStatus(
+            onPrepared = {
+                networkState.postValue(NetworkState.LOADING)
+            },
+            onSuccess = { data ->
+                response.value = data
+                networkState.postValue(NetworkState.LOADED)
+            },
+            onError = { errMessage ->
+                networkState.postValue(NetworkState.error(errMessage))
+            }
+        )
+
+        return Result(
+            data = response,
+            networkState = networkState
+        )
     }
 
 }

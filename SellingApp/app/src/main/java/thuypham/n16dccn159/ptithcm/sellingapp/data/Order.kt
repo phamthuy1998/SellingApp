@@ -1,6 +1,8 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class Order(
     @SerializedName("Id")
@@ -36,7 +38,10 @@ data class OrderItem(
     var orderID: Int? = null
 )
 
-data class StatusOrder(
-    var id: Int?=null,
-    var statusName: String?=null
-)
+@Parcelize
+data class OrderStatus(
+    @SerializedName("Id")
+    val id: Int,
+    @SerializedName("StatusName")
+    val statusName: String
+): Parcelable

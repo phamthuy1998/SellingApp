@@ -24,7 +24,7 @@ data class ProductCart(
     val display: Boolean? = null,
     @SerializedName("Stock")
     val stock: Int? = null,
-    @SerializedName("")
+    @SerializedName("Quantity")
     val quantity: Int? = null
 ) : DynamicSearchAdapter.Searchable {
     override fun getSearchCriteria(): String = name ?: ""

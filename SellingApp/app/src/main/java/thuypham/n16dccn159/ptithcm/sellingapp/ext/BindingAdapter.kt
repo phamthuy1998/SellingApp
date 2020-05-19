@@ -2,6 +2,7 @@ package thuypham.n16dccn159.ptithcm.sellingapp.ext
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Paint
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -46,6 +47,15 @@ fun bindPrice(view: TextView, price: Float?) {
     df.roundingMode = RoundingMode.CEILING
     val priceSelling = df.format(price?:0) + " đ"
     view.text = priceSelling
+}
+
+@BindingAdapter("txtPriceDiscount")
+fun bindPriceDiscount(view: TextView, price: Float?) {
+    val df = DecimalFormat("#,###,###")
+    df.roundingMode = RoundingMode.CEILING
+    val priceSelling = df.format(price?:0) + " đ"
+    view.text = priceSelling
+    view.paintFlags = view.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
 }
 
 @BindingAdapter("productStock")

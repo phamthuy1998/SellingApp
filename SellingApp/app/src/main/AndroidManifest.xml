@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="thuypham.n16dccn159.ptithcm.sellingapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -12,9 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".feature.order.OrderActivity" />
-        <activity android:name=".feature.cart.CartActivity" />
-        <activity android:name=".feature.authentication.EditProfileActivity" />
+        <activity
+            android:name=".feature.order.OrderActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.cart.CartActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".feature.authentication.EditProfileActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".feature.authentication.LoginActivity"
             android:windowSoftInputMode="adjustPan" />

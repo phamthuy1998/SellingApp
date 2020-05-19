@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_cart.*
 import org.jetbrains.anko.support.v4.startActivity
 import thuypham.n16dccn159.ptithcm.sellingapp.R
 import thuypham.n16dccn159.ptithcm.sellingapp.data.CartType
+import thuypham.n16dccn159.ptithcm.sellingapp.data.ProductCart
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Status
 import thuypham.n16dccn159.ptithcm.sellingapp.di.Injection
 import thuypham.n16dccn159.ptithcm.sellingapp.ext.*
@@ -49,15 +50,18 @@ class CartFragment : Fragment() {
     }
 
     private fun minusItemCart(id: Int) {
-        cartViewModel.minusCart(id, requireActivity().getIntPref(USER_ID))
+        cartViewModel.minusCart(requireActivity().getIntPref(USER_ID), id)
+        cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
     }
 
     private fun plusItemCart(id: Int) {
-        cartViewModel.plusCart(id, requireActivity().getIntPref(USER_ID))
+        cartViewModel.plusCart(id, requireActivity().getIntPref(USER_ID), 1)
+        cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
     }
 
     private fun delItemCart(id: Int) {
-        cartViewModel.delCartItem(id, requireActivity().getIntPref(USER_ID))
+        cartViewModel.delCartItem(requireActivity().getIntPref(USER_ID), id)
+        cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +92,12 @@ class CartFragment : Fragment() {
 
     private fun addEvents() {
         btnBackCart.setOnClickListener { requireActivity().onBackPressed() }
-        btn_continue_shopping_cart.setOnClickListener { startActivity<MainActivity>() }
+        btn_continue_shopping_cart.setOnClickListener { startActivity<MainActivity>() ; requireActivity().finish()}
         btnOrderCart.setOnClickListener { showAddress() }
+        swCart.setOnRefreshListener {
+            cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
+            swCart.isRefreshing = false
+        }
     }
 
     private fun showAddress() {
@@ -102,8 +110,9 @@ class CartFragment : Fragment() {
 
     private fun bindViewModel() {
         cartViewModel.productsCart.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
+            if (it.size!=0) {
                 cartAdapter.setProductList(it)
+                setPriceCart(it)
                 cartEmpty.gone()
             } else cartEmpty.visible()
         })
@@ -112,7 +121,7 @@ class CartFragment : Fragment() {
             progressCart.visibility = if (it.status == Status.RUNNING) View.VISIBLE else View.GONE
         })
 
-        cartViewModel.networkPlusCart.observe(viewLifecycleOwner, Observer {
+        /*cartViewModel.networkPlusCart.observe(viewLifecycleOwner, Observer {
             if (it.status == Status.SUCCESS)
                 cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
         })
@@ -120,11 +129,18 @@ class CartFragment : Fragment() {
         cartViewModel.networkMinusCart.observe(viewLifecycleOwner, Observer {
             if (it.status == Status.SUCCESS)
                 cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
-        })
+        })*/
+    }
 
-        cartViewModel.networkDelCart.observe(viewLifecycleOwner, Observer {
-            if (it.status == Status.SUCCESS)
-                cartViewModel.getProductsCart(requireActivity().getIntPref(USER_ID))
-        })
+    private fun setPriceCart(prosCart: ArrayList<ProductCart>) {
+        var totalPriceCart = 0F
+        var discount = 0f
+        var price = 0f
+        for (pro in prosCart) {
+            discount = pro.discount ?: 0F
+            price = pro.price ?: 0F
+            totalPriceCart += (price - price * discount).times(pro.quantity ?: 1)
+        }
+        bindPrice(tv_price_cart, totalPriceCart)
     }
 }

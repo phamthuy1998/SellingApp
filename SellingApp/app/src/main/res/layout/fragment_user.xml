@@ -8,6 +8,7 @@
         <variable
             name="user"
             type="thuypham.n16dccn159.ptithcm.sellingapp.data.User" />
+
         <variable
             name="userViewModel"
             type="thuypham.n16dccn159.ptithcm.sellingapp.viewmodel.UserViewModel" />
@@ -22,8 +23,8 @@
         <ScrollView
 
             android:layout_width="match_parent"
-            android:background="@color/colorGrayBg"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorGrayBg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,11 +40,11 @@
                     android:weightSum="1">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_marginTop="@dimen/margin_8dp"
                         android:id="@+id/imageView"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_margin="16dp"
+                        android:layout_marginTop="@dimen/margin_8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_weight="0.2"
                         app:srcCompat="@drawable/ic_user_profile" />
@@ -64,20 +65,20 @@
                             android:layout_height="wrap_content"
                             android:singleLine="true"
                             android:text="@{user.username}"
-                            tools:text="User name"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/ts_name" />
+                            android:textSize="@dimen/ts_name"
+                            tools:text="User name" />
 
                         <TextView
                             android:id="@+id/tv_email"
-                            tools:text="Email"
-                            android:text="@{user.email}"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_blue_right_arrow"
                             android:singleLine="true"
+                            android:text="@{user.email}"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="@dimen/ts_name" />
+                            android:textSize="@dimen/ts_name"
+                            tools:text="Email" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -95,90 +96,14 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/ts_name" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_received_order"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:background="@android:color/white"
-                        android:drawableEnd="@drawable/ic_gray_right_arrow"
-                        android:padding="16dp"
-                        android:text="@string/tv_taken"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/ts_name" />
-
-                    <TextView
-                        android:id="@+id/tv_num_order_recieved_user"
-                        android:layout_width="30dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginEnd="60dp"
-                        android:background="@drawable/edt_btn_count_number"
-                        android:gravity="center"
-                        android:text="@string/_1"
-                        android:textColor="@color/colorWhiteBG"
-                        android:textSize="13sp"
-                        android:visibility="gone" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_order_waiting_shiping"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:background="@android:color/white"
-                        android:drawableEnd="@drawable/ic_gray_right_arrow"
-                        android:padding="16dp"
-                        android:text="@string/wait_shipping"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/ts_name" />
-
-                    <TextView
-                        android:id="@+id/tv_num_of_list_order_shipping_user"
-                        android:layout_width="30dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center|end"
-                        android:layout_marginEnd="60dp"
-                        android:background="@drawable/edt_btn_count_number"
-                        android:gravity="center"
-                        android:text="@string/_1"
-                        android:textColor="@color/colorWhiteBG"
-                        android:textSize="13sp"
-                        android:visibility="gone" />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_order_success"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvOrderStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@android:color/white"
-                    android:drawableEnd="@drawable/ic_gray_right_arrow"
-                    android:padding="16dp"
-                    android:text="@string/order_successful"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/ts_name" />
-
-                <TextView
-                    android:id="@+id/tv_order_canceled"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/white"
-                    android:drawableEnd="@drawable/ic_gray_right_arrow"
-                    android:padding="16dp"
-                    android:text="@string/order_canceled"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/ts_name" />
+                    android:orientation="vertical"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_order_status"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
                     android:id="@+id/tv_hot_line"

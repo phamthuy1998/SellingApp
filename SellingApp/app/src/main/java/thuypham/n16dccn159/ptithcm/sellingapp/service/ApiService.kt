@@ -33,6 +33,7 @@ class ApiService(private val apiApi: ApiManager) {
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
+
     fun getAllPros(
         onPrepared: () -> Unit,
         onSuccess: (ArrayList<Product>?) -> Unit,
@@ -68,11 +69,12 @@ class ApiService(private val apiApi: ApiManager) {
     fun addCart(
         productID: Int,
         userID: Int,
+        quantity: Int,
         onPrepared: () -> Unit,
         onSuccess: (Boolean?) -> Unit,
         onError: (String) -> Unit
     ) {
-        val request = apiApi.addCart(productID, userID)
+        val request = apiApi.plusCart(productID, userID, quantity)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
@@ -113,11 +115,12 @@ class ApiService(private val apiApi: ApiManager) {
     fun plusCart(
         userID: Int,
         productID: Int,
+        quantity: Int,
         onPrepared: () -> Unit,
         onSuccess: (Boolean?) -> Unit,
         onError: (String) -> Unit
     ) {
-        val request = apiApi.plusCart(userID, productID)
+        val request = apiApi.plusCart(userID, productID, quantity)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
@@ -149,7 +152,7 @@ class ApiService(private val apiApi: ApiManager) {
         email: String,
         password: String,
         onPrepared: () -> Unit,
-        onSuccess: (ResultLogin?) -> Unit,
+        onSuccess: (ResultApi?) -> Unit,
         onError: (String) -> Unit
     ) {
         val request = apiApi.login(email, password)
@@ -158,12 +161,17 @@ class ApiService(private val apiApi: ApiManager) {
     }
 
     fun addOrder(
-        order: Order, itemOrder: ArrayList<OrderItem>,
+        userID: Int,
+        name: String,
+        phone: String,
+        email: String,
+        address: String,
+        note: String,
         onPrepared: () -> Unit,
-        onSuccess: (Boolean?) -> Unit,
+        onSuccess: (ResultApi?) -> Unit,
         onError: (String) -> Unit
     ) {
-        val request = apiApi.addOrder(order, itemOrder)
+        val request = apiApi.addOrder(userID, name, phone, email, address, note)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
@@ -178,6 +186,7 @@ class ApiService(private val apiApi: ApiManager) {
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
+
     fun getUserInfoByUserID(
         userID: Int,
         onPrepared: () -> Unit,
@@ -185,6 +194,28 @@ class ApiService(private val apiApi: ApiManager) {
         onError: (String) -> Unit
     ) {
         val request = apiApi.getUserInfoByUserID(userID)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun getAllOrderStatus(
+        onPrepared: () -> Unit,
+        onSuccess: (ArrayList<OrderStatus>?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.getAllOrderStatus()
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun getAllOrder(
+        userID: Int, statusID: Int?,
+        onPrepared: () -> Unit,
+        onSuccess: (ArrayList<Order>?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = if (statusID == null) apiApi.getAllOrder(userID)
+        else apiApi.getAllOrderByStatus(userID, statusID)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }
@@ -197,10 +228,39 @@ class ApiService(private val apiApi: ApiManager) {
         phone: String,
         address: String,
         onPrepared: () -> Unit,
-        onSuccess: (ResultLogin?) -> Unit,
+        onSuccess: (ResultApi?) -> Unit,
         onError: (String) -> Unit
     ) {
         val request = apiApi.signUp(username, password, name, email, phone, address)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun changeUserInfo(
+        userId: Int,
+        name: String,
+        email: String,
+        phone: String,
+        address: String,
+        avatar: String,
+        onPrepared: () -> Unit,
+        onSuccess: (ResultApi?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.changeInfoAcc(userId, name, email, phone, address, avatar)
+        onPrepared()
+        ApiRequestHelper.asyncRequest(request, onSuccess, onError)
+    }
+
+    fun changePassword(
+        userId: Int,
+        oldPass: String,
+        newPass: String,
+        onPrepared: () -> Unit,
+        onSuccess: (ResultApi?) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        val request = apiApi.changePass(userId, oldPass, newPass)
         onPrepared()
         ApiRequestHelper.asyncRequest(request, onSuccess, onError)
     }

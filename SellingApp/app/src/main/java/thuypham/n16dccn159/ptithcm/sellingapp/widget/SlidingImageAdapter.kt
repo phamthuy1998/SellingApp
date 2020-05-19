@@ -13,7 +13,11 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.Slide
 import java.util.*
 
 
-class SlidingImageAdapter(private val context: Context, private var arrAdv: ArrayList<Slide>) : PagerAdapter() {
+class SlidingImageAdapter(
+    private val context: Context,
+    private var arrAdv: ArrayList<Slide>,
+    private var onSlideClick: (productID: Int?) -> Unit
+) : PagerAdapter() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
 
@@ -21,8 +25,8 @@ class SlidingImageAdapter(private val context: Context, private var arrAdv: Arra
         container.removeView(`object` as View)
     }
 
-    fun setData(listAdv: ArrayList<Slide>){
-        if(listAdv.isNotEmpty()){
+    fun setData(listAdv: ArrayList<Slide>) {
+        if (listAdv.isNotEmpty()) {
             arrAdv.clear()
             arrAdv.addAll(listAdv)
             notifyDataSetChanged()
@@ -36,14 +40,16 @@ class SlidingImageAdapter(private val context: Context, private var arrAdv: Arra
     override fun instantiateItem(view: ViewGroup, position: Int): Any {
         val imageLayout = inflater.inflate(R.layout.slidingimages_layout_home, view, false)!!
 
-        val imageView = imageLayout
-                .findViewById(R.id.image) as ImageView
+        val imageView = imageLayout.findViewById(R.id.image) as ImageView
 
         Glide.with(context)
             .load(arrAdv[position].image)
             .into(imageView)
 
         view.addView(imageLayout, 0)
+
+        imageView.setOnClickListener { onSlideClick(arrAdv[position].productID) }
+
 
         return imageLayout
     }

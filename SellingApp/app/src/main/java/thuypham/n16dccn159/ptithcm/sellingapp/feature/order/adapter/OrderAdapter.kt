@@ -9,9 +9,10 @@ import thuypham.n16dccn159.ptithcm.sellingapp.R
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Order
 
 class OrderAdapter(
-    private var items: ArrayList<Order> = arrayListOf()
+    private val onItemClick: (order: Order) ->Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var items: ArrayList<Order>? = arrayListOf()
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater
             .from(viewGroup.context)
@@ -20,12 +21,12 @@ class OrderAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as OrderViewHolder).bind(items.get(position))
+        items?.get(position)?.let { (holder as OrderViewHolder).bind(it) }
     }
 
     fun setOrderList(list: List<Order>) {
 
-        items.apply {
+        items?.apply {
             clear()
             addAll(list)
         }
@@ -67,17 +68,13 @@ class OrderAdapter(
             }
             itemView.tv_item_order_status.text = status
 
-//            itemView.ll_item_order.setOnClickListener(){
-//                val intent = Intent(context, OrderDetailActivity::class.java)
-//                intent.putExtra("order_id", order.id)
-//                context.startActivity(intent)
-//            }
+            itemView.ll_item_order.setOnClickListener{ onItemClick(order) }
         }
 
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items?.size?:0
     }
 
     override fun getItemId(p0: Int): Long {

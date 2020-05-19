@@ -78,7 +78,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun addCart() {
         val userId = getIntPref(USER_ID)
         if (userId != -1) {
-            productId?.let { productViewModel.addCart(it, userId) }
+            productId?.let { productViewModel.addCart(it, userId, 1) }
             showBottomDialogAddCart()
         }
         // If haven't login , intent to login activity
@@ -94,7 +94,10 @@ class ProductDetailActivity : AppCompatActivity() {
 
         // Add events
         bindingDialog.btnCancelDialogAddCart.setOnClickListener() { mBottomSheetDialog.dismiss() }
-        bindingDialog.btnViewCart.setOnClickListener() { startActivity<CartActivity>() }
+        bindingDialog.btnViewCart.setOnClickListener() {
+            startActivity<CartActivity>()
+            mBottomSheetDialog.dismiss()
+        }
         mBottomSheetDialog.show()
     }
 

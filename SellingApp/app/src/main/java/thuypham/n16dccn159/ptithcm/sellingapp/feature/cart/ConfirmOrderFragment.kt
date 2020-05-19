@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import thuypham.n16dccn159.ptithcm.sellingapp.R
-import thuypham.n16dccn159.ptithcm.sellingapp.data.Order
 import thuypham.n16dccn159.ptithcm.sellingapp.data.OrderItem
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Product
 import thuypham.n16dccn159.ptithcm.sellingapp.data.ProductCart
@@ -33,15 +34,15 @@ class ConfirmOrderFragment : Fragment() {
             Injection.provideCartViewModelFactory()
         )[CartViewModel::class.java]
     }
-    private val orderViewModel : OrderViewModel by lazy {
+    private val orderViewModel: OrderViewModel by lazy {
         ViewModelProvider(
             requireActivity(),
             Injection.provideOrderViewModelFactory()
         )[OrderViewModel::class.java]
     }
 
-    private var listProducts:ArrayList<Product> = arrayListOf()
-    private var listItemOrder :ArrayList<OrderItem> = arrayListOf()
+    private var listProducts: ArrayList<Product> = arrayListOf()
+    private var listItemOrder: ArrayList<OrderItem> = arrayListOf()
     private lateinit var binding: FragmentConfirmOrderBinding
     private val productAdapter: ProductCartConfirmAdapter by lazy {
         ProductCartConfirmAdapter()
@@ -63,7 +64,8 @@ class ConfirmOrderFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.feeShip= 20000F
+        binding.feeShip = 20000F
+        binding.viewModel = cartViewModel
         bindViewModel()
         addEvents()
         initViews()
@@ -91,13 +93,14 @@ class ConfirmOrderFragment : Fragment() {
     }
 
     private fun addOrder() {
-        val order = Order().apply {
-            name = cartViewModel.name
-            phone = cartViewModel.phone
-            email = cartViewModel.email
-            address = cartViewModel.address
-        }
-        orderViewModel.addOrder(order, listItemOrder)
+        orderViewModel.addOrder(
+            requireActivity().getIntPref(USER_ID),
+            cartViewModel.name.value.toString(),
+            cartViewModel.phone.value.toString(),
+            cartViewModel.email.value.toString(),
+            cartViewModel.address.value.toString(),
+            cartViewModel.note.value.toString()
+        )
     }
 
     private fun bindViewModel() {
@@ -106,21 +109,30 @@ class ConfirmOrderFragment : Fragment() {
             getTotalPrice(it)
         })
 
+        orderViewModel.dataCheckOut.observe(viewLifecycleOwner) {
+            when (it[0].result) {
+                1 -> {
+                    showOrderSuccess()
+                }
+                else -> {
+                    Toast.makeText(requireContext(), it.get(0).message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
     }
 
     private fun getTotalPrice(arrProduct: ArrayList<ProductCart>) {
-        var price: Float=0F
-        var itemOrder : OrderItem
-        for (product in arrProduct) {
-            price += product.price!!
-            itemOrder = OrderItem().apply {
-                quantity = product.quantity
-                unitPrice = product.price
-                productId = product.id
-            }
-            listItemOrder.add(itemOrder)
+        var price = 0F
+        var itemOrder: OrderItem
+        var totalPriceCart = 0F
+        var discount = 0f
+        for (pro in arrProduct) {
+            discount = pro.discount ?: 0F
+            price = pro.price ?: 0F
+            totalPriceCart += (price - price * discount).times(pro.quantity ?: 1)
         }
-        binding.price= price
+        binding.price = totalPriceCart
     }
 
 }

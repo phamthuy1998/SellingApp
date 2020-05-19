@@ -63,16 +63,27 @@
             tools:text="@string/_1_290_000" />
 
         <TextView
-            android:id="@+id/tv_sale_like"
-            txtPrice="@{product.price}"
+            textDiscount="@{product.discount}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/margin_8dp"
             android:textColor="@color/colorTextHint"
             app:layout_constraintBottom_toBottomOf="@id/tv_price_product_favorite"
             app:layout_constraintStart_toEndOf="@id/tv_price_product_favorite"
-            app:layout_constraintTop_toTopOf="@id/tv_price_product_favorite"
+            tools:text="10%" />
+
+
+        <TextView
+            android:id="@+id/tv_sale_like"
+            txtPriceDiscount="@{product.price}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:textColor="@color/colorTextHint"
+            app:layout_constraintStart_toStartOf="@id/tv_price_product_favorite"
+            app:layout_constraintTop_toBottomOf="@id/tv_price_product_favorite"
             tools:text="@string/_1_290_000" />
 
         <TextView

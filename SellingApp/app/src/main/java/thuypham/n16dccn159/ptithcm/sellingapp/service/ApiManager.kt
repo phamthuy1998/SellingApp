@@ -1,6 +1,5 @@
 package thuypham.n16dccn159.ptithcm.sellingapp.service
 
-import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -11,15 +10,15 @@ import thuypham.n16dccn159.ptithcm.sellingapp.data.*
 
 interface ApiManager {
     companion object {
+//        private const val localhost = "192.168.1.19"
+//        private const val BASE_URL = "http://$localhost:800/api/"
 
-        private const val localhost = "192.168.1.19"
-        private const val BASE_URL = "http://$localhost:800/api/"
+        private const val BASE_URL = "http://ecommerceweb2020.azurewebsites.net/api/"
 
         fun create(): ApiManager {
             val logger = HttpLoggingInterceptor()
             logger.level = HttpLoggingInterceptor.Level.BASIC
 
-            Log.d("BASE_URL", BASE_URL)
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)
                 .build()
@@ -37,14 +36,7 @@ interface ApiManager {
     fun login(
         @Query("username") username: String,
         @Query("password") password: String
-    ): Call<ResultLogin>
-
-    //    @FormUrlEncoded
-    @POST("")
-    fun addOrder(
-        @Body order: Order,
-        @Body itemOrder: ArrayList<OrderItem>
-    ): Call<Boolean>
+    ): Call<ResultApi>
 
     @POST("signUp")
     fun signUp(
@@ -54,13 +46,41 @@ interface ApiManager {
         @Query("email") email: String,
         @Query("phone") phone: String,
         @Query("address") address: String
-    ): Call<ResultLogin>
+    ): Call<ResultApi>
+
+    @PUT("updateUser")
+    fun changeInfoAcc(
+        @Query("userId") userId: Int,
+        @Query("name") name: String,
+        @Query("email") email: String,
+        @Query("phone") phone: String,
+        @Query("address") address: String,
+        @Query("avatar") avatar: String
+    ): Call<ResultApi>
+
+    @GET("changePassword")
+    fun changePass(
+        @Query("userId") userId: Int,
+        @Query("oldPass") oldPass: String,
+        @Query("newPass") newPass: String
+    ): Call<ResultApi>
 
     @POST("")
     fun forgotPassword(email: String): Call<Int>
 
     @POST("userInfoById")
     fun getUserInfoByUserID(@Query("userId") userID: Int): Call<ArrayList<User>>
+
+    //    @FormUrlEncoded
+    @PUT("checkOut")
+    fun addOrder(
+        @Query("userId") userID: Int,
+        @Query("name") name: String,
+        @Query("phone") phone: String,
+        @Query("email") email: String,
+        @Query("address") address: String,
+        @Query("note") note: String
+    ): Call<ResultApi>
 
     @GET("allSalePros")
     fun getListProductSale(): Call<ArrayList<Product>>
@@ -74,30 +94,38 @@ interface ApiManager {
     @GET("proDetail")
     fun getProductDetailByID(@Query("proId") productID: Int): Call<ArrayList<Product>>
 
-    @POST("")
-    fun addCart(productID: Int, userId: Int): Call<Boolean>
+    @GET("allOrdersOfUser")
+    fun getAllOrder(@Query("userId") userId: Int): Call<ArrayList<Order>>
 
-    @GET("")
-    fun getListOrder(userId: Int): Call<ArrayList<Product>>
+    @GET("orderByStatus")
+    fun getAllOrderByStatus(@Query("userId") userId: Int,@Query("statusId") statusId: Int): Call<ArrayList<Order>>
 
     @GET("allCards")
     fun getListSlider(): Call<ArrayList<Slide>>
+
+    @GET("allOrderStatus")
+    fun getAllOrderStatus(): Call<ArrayList<OrderStatus>>
 
     @GET("allCates")
     fun getListCategory(): Call<ArrayList<Category>>
 
     @GET("cartCount")
-    fun getCartCount(@Query("userId")userID: Int): Call<Int>
+    fun getCartCount(@Query("userId") userID: Int): Call<Int>
 
-    @POST("")
-    fun minusCart(userID: Int, productID: Int): Call<Boolean>
-
-    @POST("")
-    fun plusCart(userID: Int, productID: Int): Call<Boolean>
+    @POST("plusCartItem")
+    fun plusCart(
+        @Query("productId") userID: Int,
+        @Query("userId") productID: Int,
+        @Query("quantity") quantity: Int
+    ): Call<Boolean>
 
     @DELETE("deleteCartItem")
-    fun delItemCart(@Query("userId")userID: Int,@Query("productId") productID: Int): Call<Boolean>
+    fun delItemCart(@Query("userId") userID: Int, @Query("productId") productID: Int): Call<Boolean>
+
+    @POST("minusCartItem")
+    fun minusCart(@Query("userId") userID: Int, @Query("productId") productID: Int): Call<Boolean>
 
     @GET("allProsOfCart")
-    fun getProductsCart(@Query("userId")userID: Int): Call<ArrayList<ProductCart>>
+    fun getProductsCart(@Query("userId") userID: Int): Call<ArrayList<ProductCart>>
+
 }

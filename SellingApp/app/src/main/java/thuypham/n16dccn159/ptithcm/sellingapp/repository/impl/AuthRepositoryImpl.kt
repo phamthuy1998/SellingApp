@@ -3,15 +3,15 @@ package thuypham.n16dccn159.ptithcm.sellingapp.repository.impl
 import androidx.lifecycle.MutableLiveData
 import thuypham.n16dccn159.ptithcm.sellingapp.data.NetworkState
 import thuypham.n16dccn159.ptithcm.sellingapp.data.Result
-import thuypham.n16dccn159.ptithcm.sellingapp.data.ResultLogin
+import thuypham.n16dccn159.ptithcm.sellingapp.data.ResultApi
 import thuypham.n16dccn159.ptithcm.sellingapp.data.User
 import thuypham.n16dccn159.ptithcm.sellingapp.repository.AuthRepository
 import thuypham.n16dccn159.ptithcm.sellingapp.service.ApiService
 
 class AuthRepositoryImpl(private val apiService: ApiService) : AuthRepository {
-    override fun login(email: String, password: String): Result<ResultLogin> {
+    override fun login(email: String, password: String): Result<ResultApi> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseLogin = MutableLiveData<ResultLogin>()
+        val responseLogin = MutableLiveData<ResultApi>()
         apiService.login(
             email, password,
             onPrepared = {
@@ -39,11 +39,41 @@ class AuthRepositoryImpl(private val apiService: ApiService) : AuthRepository {
         email: String,
         phone: String,
         address: String
-    ): Result<ResultLogin> {
+    ): Result<ResultApi> {
         val networkState = MutableLiveData<NetworkState>()
-        val responseSignUp = MutableLiveData<ResultLogin>()
+        val responseSignUp = MutableLiveData<ResultApi>()
         apiService.signUp(
             username, password, name, email, phone, address,
+            onPrepared = {
+                networkState.postValue(NetworkState.LOADING)
+            },
+            onSuccess = { response ->
+                responseSignUp.value = response
+                networkState.postValue(NetworkState.LOADED)
+            },
+            onError = { errMessage ->
+                networkState.postValue(NetworkState.error(errMessage))
+            }
+        )
+
+        return Result(
+            data = responseSignUp,
+            networkState = networkState
+        )
+    }
+
+    override fun changeInfo(
+        userId: Int,
+        name: String,
+        email: String,
+        phone: String,
+        address: String,
+        avatar: String
+    ): Result<ResultApi> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseSignUp = MutableLiveData<ResultApi>()
+        apiService.changeUserInfo(
+            userId, name, email, phone, address, avatar,
             onPrepared = {
                 networkState.postValue(NetworkState.LOADING)
             },
@@ -81,6 +111,33 @@ class AuthRepositoryImpl(private val apiService: ApiService) : AuthRepository {
 
         return Result(
             data = responseForgotPassword,
+            networkState = networkState
+        )
+    }
+
+    override fun changePassword(
+        userId: Int,
+        oldPass: String,
+        newPass: String
+    ): Result<ResultApi> {
+        val networkState = MutableLiveData<NetworkState>()
+        val responseSignUp = MutableLiveData<ResultApi>()
+        apiService.changePassword(
+            userId, oldPass, newPass,
+            onPrepared = {
+                networkState.postValue(NetworkState.LOADING)
+            },
+            onSuccess = { response ->
+                responseSignUp.value = response
+                networkState.postValue(NetworkState.LOADED)
+            },
+            onError = { errMessage ->
+                networkState.postValue(NetworkState.error(errMessage))
+            }
+        )
+
+        return Result(
+            data = responseSignUp,
             networkState = networkState
         )
     }

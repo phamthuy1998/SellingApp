@@ -28,7 +28,7 @@ class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile)
-        userViewModel.getUserInfo(getIntPref(USER_ID) ?: 0)
+        userViewModel.getInfoUser(getIntPref(USER_ID) ?: 0)
         bindViewModel()
     }
 
@@ -36,8 +36,42 @@ class EditProfileActivity : AppCompatActivity() {
         userViewModel.userInfo.observe(this) {
             binding.user = it
         }
+        userViewModel.dataChangePass.observe(this) {
+            Toast.makeText(this, it[0].message, Toast.LENGTH_LONG).show()
+        }
+        userViewModel.statusChangeInfo.observe(this) {
+            Toast.makeText(this, it[0].message, Toast.LENGTH_LONG).show()
+        }
 
-        userViewModel.networkUserInfo.observe(this) {
+        userViewModel.networkUserInfo.observe(this)
+        {
+            when (it.status) {
+                Status.RUNNING -> binding.progressEditProfile.visible()
+                Status.SUCCESS -> {
+                    binding.progressEditProfile.gone()
+                }
+                Status.FAILED -> {
+                    binding.progressEditProfile.gone()
+                    Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        userViewModel.networkChangePass.observe(this)
+        {
+            when (it.status) {
+                Status.RUNNING -> binding.progressEditProfile.visible()
+                Status.SUCCESS -> {
+                    binding.progressEditProfile.gone()
+                }
+                Status.FAILED -> {
+                    binding.progressEditProfile.gone()
+                    Toast.makeText(this, it.msg, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        userViewModel.networkChangeInfo.observe(this)
+        {
             when (it.status) {
                 Status.RUNNING -> binding.progressEditProfile.visible()
                 Status.SUCCESS -> {
@@ -95,13 +129,33 @@ class EditProfileActivity : AppCompatActivity() {
         }
         if (binding.cbChangePw.isChecked) {
             if (pass.isEmpty()) {
-                binding.edtAddress.error = getString(R.string.error_old_passwords_is_empty)
+                binding.edtOldPassword.error = getString(R.string.error_old_passwords_is_empty)
                 check = false
             }
+            if (newPass.isEmpty()) {
+                binding.edtNewPass.error = getString(R.string.error_new_pw_empty)
+                check = false
+            }
+            if (reNewPass.isEmpty()) {
+                binding.edtReNewPass.error = getString(R.string.error_re_new_pw_empty)
+                check = false
+            }
+            if (newPass != reNewPass) {
+                binding.edtReNewPass.error = getString(R.string.error_passwords_do_not_match)
+                check = false
+            }
+            if (check) userViewModel.changePass(getIntPref(USER_ID), pass, newPass)
         }
 
         if (check) {
-            userViewModel.signUp(userName, pass, name, mail, phone, address)
+            userViewModel.changeInfo(
+                userViewModel.userInfo.value?.id ?: 0,
+                name,
+                mail,
+                phone,
+                address,
+                ""
+            )
         }
     }
 }
